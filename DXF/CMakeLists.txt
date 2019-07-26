@@ -1,6 +1,5 @@
-cmake_minimum_required(VERSION 3.9.0)
-
-INCLUDE(ProjectOptions.cmake)
+cmake_minimum_required(VERSION 3.14.2)
+INCLUDE(CMake/ProjectOptions.cmake)
 project(DXF)
 set_project_dll_mode("../Lib")
-include_dir("Tools")
+include_dir(".")

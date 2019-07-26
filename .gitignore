@@ -1,0 +1,11 @@
+*.sln
+*.vcxproj
+*.filters
+*.user
+DXF/CMakeFiles/*
+CMakeCache.txt
+cmake_install.cmake
+DXF/DXF.dir/*
+DXF/.vs/*
+bin/*
+lib/*
