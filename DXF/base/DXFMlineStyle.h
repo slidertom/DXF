@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_OBJECT_H__
-	#include "DXFObject.h"
+    #include "DXFObject.h"
 #endif
 
 class CDXFMlineStyle : public CDXFObject
@@ -11,6 +11,7 @@ class CDXFMlineStyle : public CDXFObject
 // Construction/Destruction
 public:
     CDXFMlineStyle(const char *sStyleName) : CDXFObject("MLINESTYLE") { m_sStyleName = sStyleName; }
+    CDXFMlineStyle(const CDXFMlineStyle &x) = delete;
     virtual ~CDXFMlineStyle() { }
 
 // Overrides
@@ -19,8 +20,8 @@ public:
 
 // Attributes
 public:
-	std::string m_sStyleName;
-	std::string m_sStyleDescription;
+    std::string m_sStyleName;
+    std::string m_sStyleDescr;
     int32_t m_nFlags     {0};
     int32_t m_nFillColor {256};
     float m_fStartAngle  {90.0f};

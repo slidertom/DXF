@@ -100,7 +100,7 @@ namespace dxf_text_file_util
 
         pText->SetInsertPoint(point_ins);
         pText->SetAlignPoint(point_align);
-        pText->SetTextStyle(text_id);
+        pText->SetTextStyleID(text_id);
         pText->SetRotationAngle(dRotAngle);
         pText->SetObliqueAngle(dObliqueAngle);
         pText->SetScaleX(dScaleX);
@@ -121,17 +121,17 @@ namespace dxf_text_file_util
 
         writer.Write("  100\nAcDbText\n");
 
-        const CDXF3DPoint &point_ins            = text.GetInsertPoint();
-        const CDXF3DPoint &point_align          = text.GetAlingmentPoint();
-        const double dHeight                    = text.GetTextHeight();
-        const double dRotAngle                  = text.GetRotationAngle();
-        const double dScaleX                    = text.GetScaleX();
-        const double dObliqueAngle              = text.GetObliqueAngle();
-        const CDXFObjectID &text_id             = text.GetTextStyle();
-        const unsigned char text_flags          = text.GetTextFlags();
-        const ETextHorzAlignment &align_horz    = text.GetHorzAlignment();
-        const ETextVertAlignment &align_vert    = text.GetVertAlignment();
-        std::string sText                       = text.GetText();
+        const CDXF3DPoint &point_ins         = text.GetInsertPoint();
+        const CDXF3DPoint &point_align       = text.GetAlingmentPoint();
+        const double dHeight                 = text.GetTextHeight();
+        const double dRotAngle               = text.GetRotationAngle();
+        const double dScaleX                 = text.GetScaleX();
+        const double dObliqueAngle           = text.GetObliqueAngle();
+        const CDXFObjectID &text_id          = text.GetTextStyleID();
+        const unsigned char text_flags       = text.GetTextFlags();
+        const ETextHorzAlignment align_horz  = text.GetHorzAlignment();
+        const ETextVertAlignment align_vert  = text.GetVertAlignment();
+        std::string sText                    = text.GetText();
 
         writer.WritePoint(point_ins, 10, 20, 30);
         writer.WriteFloatingPoint(dHeight, 40);

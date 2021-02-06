@@ -18,12 +18,12 @@ namespace dxf_dim_file_util
         void PrintHandleVar(CDXFWriter &writer, const CDXFObjectID &overrideStyleId, const CDXFObjectID &dimstyleId, int32_t nCode, bool &bStarted)
         {
             if ( overrideStyleId != dimstyleId)
-            {																	
-                if (!bStarted)													
-                {		
+            {                                                                    
+                if (!bStarted)                                                    
+                {        
                     writer.Write("  1001\nACAD\n  1000\nDSTYLE\n  1002\n{\n");
-                    bStarted = true;											
-                }				
+                    bStarted = true;                                            
+                }                
 
                 writer.WriteNumber(nCode, 1070);
                 writer.WriteNumber(overrideStyleId.GetHandle(), 1005);
@@ -62,11 +62,11 @@ namespace dxf_dim_file_util
 
         void PrintFloatVar(CDXFWriter &writer, const double &dOverridden, const double &dDimStyle, int32_t nCode, bool &bStarted)
         {
-            if (dOverridden != dDimStyle)						
-            {																	
-                if ( !bStarted ) {																
+            if (dOverridden != dDimStyle)                        
+            {                                                                    
+                if ( !bStarted ) {                                                                
                     writer.Write("  1001\nACAD\n  1000\nDSTYLE\n  1002\n{\n");
-                    bStarted = true;											
+                    bStarted = true;                                            
                 }
 
                 writer.WriteNumber(nCode, 1070);

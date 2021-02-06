@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_SYMBOL_TABLE_RECORD_H__
-	#include "DXFSymbolTableRecord.h"
+    #include "DXFSymbolTableRecord.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "DXF3DPoint.h"
+    #include "DXF3DPoint.h"
 #endif
 
 class CDXFAbstractViewTableRecord : public CDXFSymbolTableRecord  
@@ -43,21 +43,21 @@ public:
     double GetFrontClipDistance() const { return m_dFrontClipDistance; }
     void SetFrontClipDistance(double dDistance) { m_dFrontClipDistance = dDistance; }
 
-	bool GetUCS(CDXF3DPoint &origin, CDXF3DPoint &xAxis, CDXF3DPoint &yAxis) const {
-	    if (!m_bUCSAttached) {
-		    return false;
+    bool GetUCS(CDXF3DPoint &origin, CDXF3DPoint &xAxis, CDXF3DPoint &yAxis) const {
+        if (!m_bUCSAttached) {
+            return false;
         }
-	    origin = m_ucsOrigin;
-	    xAxis  = m_ucsXAxis;
-	    yAxis  = m_ucsYAxis;
-	    return true;
+        origin = m_ucsOrigin;
+        xAxis  = m_ucsXAxis;
+        yAxis  = m_ucsYAxis;
+        return true;
     }
 
     void SetUCS(const CDXF3DPoint &origin, const CDXF3DPoint &xAxis, const CDXF3DPoint &yAxis) {
-	    m_bUCSAttached = true;
-	    m_ucsOrigin    = origin;
-	    m_ucsXAxis     = xAxis;
-	    m_ucsYAxis     = yAxis;
+        m_bUCSAttached = true;
+        m_ucsOrigin    = origin;
+        m_ucsXAxis     = xAxis;
+        m_ucsYAxis     = yAxis;
     }
    
     double GetLensLength() const { return m_dLensLength; }
@@ -65,24 +65,24 @@ public:
 
 // Attributes
 public:
-	CDXF3DPoint m_pointTarget;
-	CDXF3DPoint m_pointCenter;
+    CDXF3DPoint m_pointTarget;
+    CDXF3DPoint m_pointCenter;
 
-	CDXF3DPoint m_viewDirection;
+    CDXF3DPoint m_viewDirection;
 
     double m_dBackClipDistance  {0.};
-	double m_dFrontClipDistance {0.};
+    double m_dFrontClipDistance {0.};
 
     double m_dHeight {0.};
-	double m_dWidth  {0.};
+    double m_dWidth  {0.};
 
     double m_dLensLength {50.};
 
     bool m_bUCSAttached {false};
 
-	CDXF3DPoint m_ucsOrigin;
-	CDXF3DPoint m_ucsXAxis;
-	CDXF3DPoint m_ucsYAxis;
+    CDXF3DPoint m_ucsOrigin;
+    CDXF3DPoint m_ucsXAxis;
+    CDXF3DPoint m_ucsYAxis;
 };
 
 #ifndef __DXF_SYMBOL_TABLE_H__
@@ -111,7 +111,7 @@ class CDXFViewportTableRecord : public CDXFAbstractViewTableRecord
 {
 // Construction/Destruction
 public:
-	CDXFViewportTableRecord(const char *sName)  : CDXFAbstractViewTableRecord(sName, "VPORT"), m_snapSpacing(1, 1, 0), m_gridSpacing(1, 1, 0) { }
+    CDXFViewportTableRecord(const char *sName)  : CDXFAbstractViewTableRecord(sName, "VPORT"), m_snapSpacing(1, 1, 0), m_gridSpacing(1, 1, 0) { }
     virtual ~CDXFViewportTableRecord() { }
 
 // Overrides
@@ -120,21 +120,21 @@ public:
 
 // Operations
 public:
-	void SnapON(bool bON) {
-	    if (bON) {
-		    m_fSnapON = 1;
-	    }
-	    else {
-		    m_fSnapON = 0;
-	    }
-    }
-	void GridON(bool bON) {
+    void SnapON(bool bON) {
         if (bON) {
-		    m_fGridON = 1;
-	    }
-	    else {
-		    m_fGridON = 0;
-	    }
+            m_fSnapON = 1;
+        }
+        else {
+            m_fSnapON = 0;
+        }
+    }
+    void GridON(bool bON) {
+        if (bON) {
+            m_fGridON = 1;
+        }
+        else {
+            m_fGridON = 0;
+        }
     }
 
     void SetUpperRightCorner(double x, double y) { m_upperRightCorner.SetValues(x, y, m_upperRightCorner.z); }
@@ -148,13 +148,13 @@ public:
     unsigned char m_fGridON {0};
     unsigned char m_fSnapON {0};
 
-	CDXF3DPoint m_gridSpacing;
+    CDXF3DPoint m_gridSpacing;
 
-	CDXF3DPoint m_snapBase;
-	CDXF3DPoint m_snapSpacing;
+    CDXF3DPoint m_snapBase;
+    CDXF3DPoint m_snapSpacing;
 
-	CDXF3DPoint m_upperRightCorner;
-	CDXF3DPoint m_lowerLeftCorner;
+    CDXF3DPoint m_upperRightCorner;
+    CDXF3DPoint m_lowerLeftCorner;
 
 private:
     unsigned char m_fFlags {0};

@@ -18,7 +18,7 @@ namespace dxf_mline_style_file_util
         writer.Write("  100\nAcDbMlineStyle\n");
         writer.WriteText(line.m_sStyleName.c_str(), 2);
         writer.WriteNumber(line.m_nFlags, 70);
-        writer.WriteText(line.m_sStyleDescription.c_str(), 3);
+        writer.WriteText(line.m_sStyleDescr.c_str(), 3);
         writer.WriteNumber(line.m_nFillColor, 62);
         writer.WriteFloatingPoint(line.m_fStartAngle, 51);
         writer.WriteFloatingPoint(line.m_fEndAngle, 52);

@@ -14,20 +14,20 @@
     #include "../entity/DXFEntity.h"
 #endif
 
-class CDXFEntitySetLineWeightVisitor : public CDXFEntityVisitor
+class CDXFEntitySetLineWeightVisitor final : public CDXFEntityVisitor
 {
 // Construction/Destruction
 public:
-	CDXFEntitySetLineWeightVisitor(EDXFLineWeight eLineWeight);
-	virtual ~CDXFEntitySetLineWeightVisitor() { }
+    CDXFEntitySetLineWeightVisitor(EDXFLineWeight eLineWeight);
+    virtual ~CDXFEntitySetLineWeightVisitor() { }
 
 // Overrides
 protected:
-	virtual void VisitDXFArc(CDXFArc &entity) override;
-	virtual void VisitDXFCircle(CDXFCircle &entity) override;
-	virtual void VisitDXFHatch(CDXFHatch &entity) override;
-	virtual void VisitDXFLine(CDXFLine &entity) override;
-	virtual void VisitDXFPolyline(CDXFPolyline &entity) override;
+    virtual void VisitDXFArc(CDXFArc &entity) override;
+    virtual void VisitDXFCircle(CDXFCircle &entity) override;
+    virtual void VisitDXFHatch(CDXFHatch &entity) override;
+    virtual void VisitDXFLine(CDXFLine &entity) override;
+    virtual void VisitDXFPolyline(CDXFPolyline &entity) override;
 
     virtual void VisitDXFDimension(CDXFDimension &entity) override { }
     virtual void VisitDXFMText(CDXFMText &entity) override { }

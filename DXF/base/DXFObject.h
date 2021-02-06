@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_OBJECTID_H__
-	#include "DXFObjectID.h"
+    #include "DXFObjectID.h"
 #endif
 
 #include "string"
@@ -32,11 +32,13 @@ protected:
 
 class CDXFObject
 {
-	friend class CDXFDatabase;
+    friend class CDXFDatabase;
 
 // Construction/Destruction
 protected:
     CDXFObject() = delete;
+    CDXFObject(const CDXFObject &x) = delete;
+    CDXFObject(CDXFObject &&x) = delete;
     CDXFObject(const char *sObjectName) : m_sObjectName(sObjectName) { }
     virtual ~CDXFObject() { }
 
@@ -55,8 +57,8 @@ public:
 
 // Attributes
 public:
-	CDXFObjectID m_objectID;
-	CDXFObjectID m_ownerID;
+    CDXFObjectID m_objectID;
+    CDXFObjectID m_ownerID;
 
 private:
     std::string m_sObjectName;

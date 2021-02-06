@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "DXFDLLAPI.h"
+    #include "DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_SYMBOL_TABLE_H__
-	#include "DXFSymbolTable.h"
+    #include "DXFSymbolTable.h"
 #endif
 
 #ifndef __DXF_TABLE_VISITOR_H__
@@ -29,11 +29,11 @@ public:
 
 // Operations
 public:
-	void AddTableRecord(CDXFLayerTableRecord *pRecord, CDXFObjectID &objectID, CDXFDatabase *pDB);
-	void AddTableRecord(CDXFLayerTableRecord *pRecord, CDXFDatabase *pDB);
-	CDXFLayerTableRecord *GetLayerTableRecord(const char *sName) {
-	    CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
-	    CDXFLayerTableRecord *pRecord = (CDXFLayerTableRecord *)pRec;
+    void AddTableRecord(CDXFLayerTableRecord *pRecord, CDXFObjectID &objectID, CDXFDatabase *pDB);
+    void AddTableRecord(CDXFLayerTableRecord *pRecord, CDXFDatabase *pDB);
+    CDXFLayerTableRecord *GetLayerTableRecord(const char *sName) {
+        CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
+        CDXFLayerTableRecord *pRecord = (CDXFLayerTableRecord *)pRec;
         return pRecord;
     }
 };

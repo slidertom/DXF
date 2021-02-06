@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_OBJECT_H__
-	#include "DXFObject.h"
+    #include "DXFObject.h"
 #endif
 
 class CDXFPlaceHolder : public CDXFObject  

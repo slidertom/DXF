@@ -25,7 +25,7 @@ namespace dxf_obj_file_util
                 bOpenControlString = !bOpenControlString;
                 break;
 
-            case 330:			// Owner object
+            case 330:            // Owner object
             {
                 if (!bOpenControlString)
                 {

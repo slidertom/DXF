@@ -34,7 +34,7 @@ namespace dxf_polyline_file_util
                 nNumVertices = item.m_resInt;
                 break;
             case 70:
-                pPoly->SetClosed(item.m_resInt == 1);//1=closed
+                pPoly->SetClosed(item.m_resInt == 1); // 1 = closed
                 break;
             case 43:
                 pPoly->SetConstantWidth(item.m_resDouble);

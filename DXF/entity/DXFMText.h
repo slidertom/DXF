@@ -3,15 +3,15 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "../DXFDLLAPI.h"
+    #include "../DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_ENTITY_H__
-	#include "DXFEntity.h"
+    #include "DXFEntity.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "../base/DXF3DPoint.h"
+    #include "../base/DXF3DPoint.h"
 #endif
 
 #ifndef __DXF_LINE_WEIGHT_H__
@@ -24,22 +24,22 @@
 
 enum EMTextAttachement
 {
-	eAttachTopLeft = 1,
-	eAttachTopCenter,
-	eAttachTopRight,
-	eAttachMiddleLeft,
-	eAttachMiddleCenter,
-	eAttachMiddleRight,
-	eAttachBottomLeft,
-	eAttachBottomCenter,
-	eAttachBottomRight
+    eAttachTopLeft = 1,
+    eAttachTopCenter,
+    eAttachTopRight,
+    eAttachMiddleLeft,
+    eAttachMiddleCenter,
+    eAttachMiddleRight,
+    eAttachBottomLeft,
+    eAttachBottomCenter,
+    eAttachBottomRight
 };
 
 enum EMTextDirection
 {
-	eDirLeftToRight = 1,
-	eDirTopToBottom = 3,
-	eDirByStyle     = 5
+    eDirLeftToRight = 1,
+    eDirTopToBottom = 3,
+    eDirByStyle     = 5
 };
 
 class DXFDLLAPI CDXFMText : public CDXFEntity  
@@ -47,14 +47,28 @@ class DXFDLLAPI CDXFMText : public CDXFEntity
 // Construction/Destruction
 public:
     CDXFMText() : CDXFEntity("MTEXT") { }
-    CDXFMText::CDXFMText(const CDXFMText &entity)
-        : CDXFEntity(entity, "MTEXT"), /*m_eLineWeight(entity.m_eLineWeight), */m_pointInsert(entity.GetInsertPoint()), m_dTextHeight(entity.GetTextHeight()), m_dRectangleWidth(entity.GetRectangleWidth()),
-        m_eAttachement(entity.GetAttachement()), m_eDirection(entity.GetDirection()), m_sText(entity.GetText()), m_dAngle(entity.GetAngle()) { };
+    CDXFMText(const char *sText, const CDXF3DPoint &insertPoint, double dAngle, double dRectWidth, const CDXFObjectID &textStyleID) 
+        : CDXFEntity("MTEXT"), 
+          m_sText(sText), 
+          m_pointInsert(insertPoint), 
+          m_dAngle(dAngle),
+          m_dRectangleWidth(dRectWidth),
+          m_textStyleID(textStyleID) { }
+    CDXFMText(const CDXFMText &entity)
+        : CDXFEntity(entity, "MTEXT"),
+          m_pointInsert(entity.GetInsertPoint()), 
+          m_dTextHeight(entity.GetTextHeight()), 
+          m_dRectangleWidth(entity.GetRectangleWidth()),
+          m_eAttachement(entity.GetAttachement()), 
+          m_eDirection(entity.GetDirection()), 
+          m_sText(entity.GetText()), 
+          m_dAngle(entity.GetAngle()),
+          m_textStyleID(entity.m_textStyleID) { }
     virtual ~CDXFMText() { }
 
 // Overrides
 public:
-	virtual void Accept(CDXFEntityVisitor &vis) override { vis.VisitDXFMText(*this); }
+    virtual void Accept(CDXFEntityVisitor &vis) override { vis.VisitDXFMText(*this); }
 
 // Operations
 public:
@@ -83,16 +97,35 @@ public:
     double GetAngle() const { return m_dAngle; }
     void SetAngle(double dAngle) { m_dAngle = dAngle; }
 
-    //void SetLineWeight(EDXFLineWeight eLineWeight) { m_eLineWeight = eLineWeight; }
-    //EDXFLineWeight GetLineWeight() const { return m_eLineWeight; }
+    // Static operations
+public:
+    // autocad: text always contains predefined text style
+    template <class TDXFBlockTableRecord, class TDXFTextStyleTableRecord>
+    static CDXFMText *Create(const char *sText, double x, double y, double dRectWidth, double dAngle,
+        CDXFDatabase *pDB, TDXFBlockTableRecord *pBlock,
+        const CDXFObjectID &layerID, TDXFTextStyleTableRecord *pTextStyle, double dTextSize = 5.0) {
+        CDXFMText *pMText = new CDXFMText(sText, CDXF3DPoint(x, y, 0.0), dAngle, dRectWidth, pTextStyle->GetObjectID());
+        pMText->SetLayerID(layerID);
+
+        if (pTextStyle->GetTextHeight() > 0.0) {
+            pMText->SetTextHeight(pTextStyle->GetTextHeight());
+        }
+        else {
+            pMText->SetTextHeight(dTextSize);
+        }
+
+        pBlock->AddEntity(pMText, pDB);
+
+        return pMText;
+    }
 
 // Attributes
 private:
     std::string m_sText;
 
-    EMTextAttachement m_eAttachement{ eAttachTopLeft };
-    CDXFObjectID m_textStyleID;
-    EMTextDirection m_eDirection{ eDirByStyle };
+    EMTextAttachement m_eAttachement {eAttachTopLeft};
+    CDXFObjectID m_textStyleID; // Text style name (STANDARD if not provided) (optional)
+    EMTextDirection m_eDirection {eDirByStyle};
 
     CDXF3DPoint m_pointInsert;
 

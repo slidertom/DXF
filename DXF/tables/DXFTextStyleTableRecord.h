@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_SYMBOL_TABLE_RECORD_H__
-	#include "DXFSymbolTableRecord.h"
+    #include "DXFSymbolTableRecord.h"
 #endif
 
 #ifndef __DXF_SYMBOL_TABLE_H__
@@ -26,7 +26,6 @@ public:
         m_sBigFontFile      = record.m_sBigFontFile;
         m_sFontFile         = record.m_sFontFile;
     }
-
     virtual ~CDXFTextStyleTableRecord() { }
 
 // Operations
@@ -34,53 +33,53 @@ public:
     double GetObliqueAngle() const { return m_dObliqueAngle; }
     void SetObliqueAngle(double dObliqueAngle) { m_dObliqueAngle = dObliqueAngle; }
     
-	void SetUpsideDown(bool bUpsideDown) {
-	    if (bUpsideDown) {
-		    m_fTextFlags |= eUpsideDown;
-	    }
-	    else {
-		    m_fTextFlags &= ~eUpsideDown;
-	    }
+    void SetUpsideDown(bool bUpsideDown) {
+        if (bUpsideDown) {
+            m_fTextFlags |= eUpsideDown;
+        }
+        else {
+            m_fTextFlags &= ~eUpsideDown;
+        }
     }
 
-	bool GetUpsideDown() {
-	    if (m_fTextFlags &= eUpsideDown) {
-		    return true;
-	    }
-	    else {
-		    return false;
-	    }
+    bool GetUpsideDown() const {
+        if ((m_fTextFlags & eUpsideDown) == eUpsideDown) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-	void SetBackward(bool bBackward) {
-	    if (bBackward) {
-		    m_fTextFlags |= eBackward;
-	    }
-	    else {
-		    m_fTextFlags &= ~eBackward;
-	    }
+    void SetBackward(bool bBackward) {
+        if (bBackward) {
+            m_fTextFlags |= eBackward;
+        }
+        else {
+            m_fTextFlags &= ~eBackward;
+        }
     }
 
-	bool GetBackward() {
-	    if (m_fTextFlags &= eBackward) {
-		    return true;
-	    }
-	    else {
-		    return false;
-	    }
+    bool GetBackward() const {
+        if ((m_fTextFlags & eBackward) == eUpsideDown) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-	// Default text height
+    // Default text height
     double GetTextHeight() const { return m_dTextHeight; }
     void SetTextHeight(double dTextHeight) { m_dTextHeight = dTextHeight; }
 
-	// Text width factor
+    // Text width factor
     double GetWidthFactor() const { return m_dWidthFactor; }
     void SetWidthFactor(double dWidthFactor) { m_dWidthFactor = dWidthFactor; }
 
     const char *GetFontFile() const { return m_sFontFile.c_str(); }
     void SetFontFile(const char *sFontFile) { m_sFontFile = sFontFile; }
-	
+    
     const char *GetBigFontFile() const { return m_sBigFontFile.c_str(); }
     void SetBigFontFile(const char *sFontFile) { m_sBigFontFile = sFontFile; }
 
@@ -98,21 +97,48 @@ public:
     double m_dTextHeight       {0.};
     double m_dWidthFactor      {1.};
     double m_dPriorTextHeight  {0.};
-	std::string m_sBigFontFile;
+    std::string m_sBigFontFile;
     std::string m_sFontFile    {"txt"};
 
-	// extended data
+    // extended data
     bool        m_bExDataInitiated {false};
-	std::string m_sExApplName;
-	std::string m_sExFontName;
+    std::string m_sExApplName;
+    std::string m_sExFontName;
     int32_t     m_nExFontCode {0};
 
 private:
     unsigned char m_fFlags {0};
-	enum {
-		eBackward   = 2,
-		eUpsideDown = 4
-	};
+    enum {
+        eBackward   = 2,
+        eUpsideDown = 4
+    };
 };
+
+namespace text_style_utils
+{
+    template<class TTextEntity, class TDXFDB>
+    void UpdateTextStyle(TTextEntity &entity, TDXFDB *pDBTrg)
+    {
+        // Text style name (STANDARD if not provided) (optional)
+        const CDXFObjectID &textStyleIDSrc = entity.GetTextStyleID();
+        if ( textStyleIDSrc.IsNull() ) {
+            return;
+        }
+
+        const CDXFTextStyleTableRecord *pTextStyleSrc = (CDXFTextStyleTableRecord *)textStyleIDSrc.GetObject();
+        const std::string sTextStyle = pTextStyleSrc->GetName();
+        const CDXFTextStyleTable *pTextStyleTable = pDBTrg->GetTextStyleTable();
+        CDXFObjectID textStyleIDTrg;
+
+        // Get text style of the original text entity
+        pTextStyleTable->GetTableRecordId(sTextStyle.c_str(), textStyleIDTrg);
+        if (textStyleIDTrg.IsNull()) {
+            return;
+        }
+
+        // Update text style with current DB style
+        entity.SetTextStyleID(textStyleIDTrg);
+    }
+}
 
 #endif

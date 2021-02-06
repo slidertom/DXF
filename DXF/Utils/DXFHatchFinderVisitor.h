@@ -19,14 +19,14 @@ public:
 
 // Operations
 public:
-	bool HatchExists() const    { return m_bHatchExists; }
-	CDXFHatch *GetHatchEntity() { return m_pHatchEntity; }
+    bool HatchExists() const    { return m_bHatchExists; }
+    CDXFHatch *GetHatchEntity() { return m_pHatchEntity; }
 
 // Overrides
 protected:
-	virtual void VisitDXFHatch(CDXFHatch &entity) override {
+    virtual void VisitDXFHatch(CDXFHatch &entity) override {
         m_bHatchExists = true;
-	    m_pHatchEntity = &entity;
+        m_pHatchEntity = &entity;
     }
 
     virtual void VisitDXFArc(CDXFArc &entity) override { }

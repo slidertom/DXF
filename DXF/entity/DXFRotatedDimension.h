@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "../DXFDLLAPI.h"
+    #include "../DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_DIMENSION_H__
-	#include "DXFDimension.h"
+    #include "DXFDimension.h"
 #endif
 
 #ifndef __DXF_ENTITY_VISITOR_H__
@@ -19,17 +19,20 @@ class DXFDLLAPI CDXFRotatedDimension : public CDXFDimension
 // Construction/Destruction
 public:
     CDXFRotatedDimension() { }
-	CDXFRotatedDimension(double dRotation, 
-		                 const CDXF3DPoint &extensionLine1StartPoint,
-		                 const CDXF3DPoint &extensionLine2StartPoint,
-		                 const CDXF3DPoint &dimensionLinePoint,
-		                 const char *sDimText = nullptr);
-	CDXFRotatedDimension(const CDXFRotatedDimension &dimension);
+    CDXFRotatedDimension(double dRotation, 
+                         const CDXF3DPoint &extensionLine1StartPoint,
+                         const CDXF3DPoint &extensionLine2StartPoint,
+                         const CDXF3DPoint &dimensionLinePoint,
+                         const char *sDimText = nullptr);
+    CDXFRotatedDimension(double dRotation, 
+                         double x1, double y1, double x2, double y2, double dimx, double dimy,
+                         const char *sDimText = nullptr);
+    CDXFRotatedDimension(const CDXFRotatedDimension &dimension);
     virtual ~CDXFRotatedDimension() { }
 
 // Overrides
 public:
-    virtual void AcceptDim(CDXFDimensionVisitor &vis) override { vis.VisitDXFRotatedDimension(*this); };
+    virtual void AcceptDim(CDXFDimensionVisitor &vis) override { vis.VisitDXFRotatedDimension(*this); }
 
 // Static operations
 public:
@@ -43,8 +46,8 @@ public:
 
 // Attributes
 public:
-	CDXF3DPoint m_defPoint1;
-	CDXF3DPoint m_defPoint2;
+    CDXF3DPoint m_defPoint1;
+    CDXF3DPoint m_defPoint2;
 
 private:
     double m_dRotation   {0.}; // In radians

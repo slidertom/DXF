@@ -3,18 +3,17 @@
 #pragma once
 
 #ifndef __DXF_OBJECT_H__
-	#include "../base/DXFObject.h"
+    #include "../base/DXFObject.h"
 #endif
 
 class CDXFRecordVisitor;
 
 class CDXFSymbolTableRecord : public CDXFObject
-{	
+{    
 // Construction/Destruction
 public:
-    CDXFSymbolTableRecord() = delete;
     CDXFSymbolTableRecord(const char *sName, const char *sObjectName) : CDXFObject(sObjectName), m_sName(sName)  {  }
-	CDXFSymbolTableRecord(const CDXFSymbolTableRecord &record, const char *sObjectName) 
+    CDXFSymbolTableRecord(const CDXFSymbolTableRecord &record, const char *sObjectName) 
         : CDXFObject(sObjectName), m_sName(record.m_sName){ }
     virtual ~CDXFSymbolTableRecord() { }
 

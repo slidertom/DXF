@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_ENTITY_H__
-	#include "DXFEntity.h"
+    #include "DXFEntity.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "../base/DXF3DPoint.h"
+    #include "../base/DXF3DPoint.h"
 #endif
 
 #ifndef __DXF_ENTITY_VISITOR_H__
@@ -33,8 +33,8 @@ public:
     virtual void Accept(CDXFEntityVisitor &vis) override { vis.VisitDXFBlockBegin(*this); }
 
 // Operations
-public:	
-	const char *GetBlockName() const { return m_sBlockName.c_str(); }
+public:    
+    const char *GetBlockName() const { return m_sBlockName.c_str(); }
     void SetBlockName(const char *sName) { m_sBlockName = sName; }
 
     const char *GetXRefPathName() const { return m_sXRefPathName.c_str(); }
@@ -51,13 +51,13 @@ public:
 
 // Attributes
 private:
-	std::string m_sBlockName;
-	std::string m_sXRefPathName;
-	std::string m_sDescription;
+    std::string m_sBlockName;
+    std::string m_sXRefPathName;
+    std::string m_sDescription;
 
     int32_t m_nFlags {0};
 
-	CDXF3DPoint m_basePoint;
+    CDXF3DPoint m_basePoint;
 };
 
 #endif

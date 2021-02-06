@@ -3,23 +3,23 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "../DXFDLLAPI.h"
+    #include "../DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_ENTITY_H__
-	#include "DXFEntity.h"
+    #include "DXFEntity.h"
 #endif
 
 #ifndef __DXF_MATRIX3D_H__
-	#include "../base/DXFMatrix3D.h"
+    #include "../base/DXFMatrix3D.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "../base/DXF3DPoint.h"
+    #include "../base/DXF3DPoint.h"
 #endif
 
 #ifndef __DXF_BLOCKTABLERECORD_H__
-	#include "../tables/DXFBlockTableRecord.h"
+    #include "../tables/DXFBlockTableRecord.h"
 #endif
 
 #ifndef __DXF_LINE_WEIGHT_H__
@@ -34,7 +34,7 @@ class DXFDLLAPI CDXFInsert : public CDXFEntity
 {
 // Construction/Destruction
 public:
-	CDXFInsert() : CDXFEntity("INSERT") { }
+    CDXFInsert() : CDXFEntity("INSERT") { }
     virtual ~CDXFInsert() { }  // m_attributes will be deleted in database object
 
 private:
@@ -49,9 +49,9 @@ public:
 
 // Operations
 public:
-	void SetBlockTableRecordID(const CDXFObjectID &recordID);
-    bool IsNullBlockID() const { return m_blockID.IsNull(); };
-    CDXFBlockTableRecord *GetBlock() const { return (CDXFBlockTableRecord *)m_blockID.GetObject(); };
+    void SetBlockTableRecordID(const CDXFObjectID &recordID);
+    bool IsNullBlockID() const { return m_blockID.IsNull(); }
+    CDXFBlockTableRecord *GetBlock() const { return (CDXFBlockTableRecord *)m_blockID.GetObject(); }
 
     CDXF3DPoint GetInsertPoint() const { return m_pointIns; }
     void SetInsertPoint(const CDXF3DPoint &insPoint) { m_pointIns = insPoint; }
@@ -66,7 +66,7 @@ public:
     void SetLineWeight(EDXFLineWeight eLineWeight) { m_eLineWeight = eLineWeight; }
     EDXFLineWeight GetLineWeight() const { return m_eLineWeight; }
    
-	CDXFMatrix3D GetOCSToWCSMatrix() const;
+    CDXFMatrix3D GetOCSToWCSMatrix() const;
 
 // Overrides
 public:

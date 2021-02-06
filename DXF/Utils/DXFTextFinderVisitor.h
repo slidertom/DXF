@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_ENTITY_H__
-	#include "../entity/DXFEntity.h"
+    #include "../entity/DXFEntity.h"
 #endif
 
 #ifndef __DXF_ENTITY_VISITOR_H__
@@ -22,7 +22,7 @@ public:
 
 // Operations
 public:
-	bool TextExists() const { return m_bTextExists; };
+    bool TextExists() const { return m_bTextExists; }
 
 protected:
     virtual void VisitDXFMText(CDXFMText &entity) override { m_bTextExists = true; }

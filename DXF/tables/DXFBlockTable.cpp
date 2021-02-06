@@ -6,11 +6,11 @@
 
 void CDXFBlockTable::AddBlockTableRecord(CDXFBlockTableRecord *pRecord, CDXFObjectID &objectID, CDXFDatabase *pDB)
 {
-	CDXFObjectID layerID;
-	pDB->GetLayerTable()->GetTableRecordId("0", layerID);
-	pRecord->m_layerID = layerID;
+    CDXFObjectID layerID;
+    pDB->GetLayerTable()->GetTableRecordId("0", layerID);
+    pRecord->m_layerID = layerID;
 
-	CDXFSymbolTable::AddTableRecordId(pRecord, objectID, pDB);
+    CDXFSymbolTable::AddTableRecordId(pRecord, objectID, pDB);
     pRecord->CreateBeginEndEntities(pDB);
 }
 
@@ -31,7 +31,7 @@ CDXFBlockTableRecord *CDXFBlockTable::CreateBlockTableRecord(const char *sBlockN
 {
     CDXFBlockTableRecord *pBlock = new CDXFBlockTableRecord(sBlockName);
     CDXFObjectID objectID;
-	AddBlockTableRecord(pBlock, objectID, pDB);
+    AddBlockTableRecord(pBlock, objectID, pDB);
     return pBlock;
 }
 
@@ -39,23 +39,23 @@ CDXFBlockTableRecord *CDXFBlockTable::CreateUniqueTableRecord(CDXFObjectID &obje
 {
     CDXFBlockTableRecord *pRecord = nullptr;
     std::string sBuffer;
-	do {
+    do {
         ++m_nNumBlock;
         sBuffer = "*D";
         sBuffer += std::to_string(m_nNumBlock);
-		pRecord = GetBlockTableRecord(sBuffer.c_str());
-	}
-	while (pRecord);
+        pRecord = GetBlockTableRecord(sBuffer.c_str());
+    }
+    while (pRecord);
 
-	pRecord = new CDXFBlockTableRecord(sBuffer.c_str());
-	AddBlockTableRecord(pRecord, objectID, pDB);
+    pRecord = new CDXFBlockTableRecord(sBuffer.c_str());
+    AddBlockTableRecord(pRecord, objectID, pDB);
     return pRecord;
 }
 
 CDXFBlockTableRecord *CDXFBlockTable::GetBlockTableRecord(const char *sName)
 {
-	CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
+    CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
     // TODO: static CDXFBlockTableRecord *CDXFBlockTableRecord::GetObject(CDXFSymbolTableRecord *pRec) and visitor reuse
-	CDXFBlockTableRecord *pRecord = (CDXFBlockTableRecord *)pRec; 
+    CDXFBlockTableRecord *pRecord = (CDXFBlockTableRecord *)pRec; 
     return pRecord;
 }

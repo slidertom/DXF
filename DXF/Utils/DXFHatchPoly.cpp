@@ -42,12 +42,12 @@ namespace dxf_hatch_poly
         void operator()(CDXFBoundaryEdgeBase *pBase) { pBase->Accept(*this); }
         void operator()(CDXF2DLineSegment &line) {
             CHatchPoly::value_type pointStart;
-	        CHatchPoly::value_type pointEnd;
+            CHatchPoly::value_type pointEnd;
 
             pointStart.x = line.m_x1;
-		    pointStart.y = line.m_y1;
-		    pointEnd.x   = line.m_x2;
-		    pointEnd.y   = line.m_y2;
+            pointStart.y = line.m_y1;
+            pointEnd.x   = line.m_x2;
+            pointEnd.y   = line.m_y2;
 
             m_pPoly->push_back(pointStart);
             m_pPoly->push_back(pointEnd);
@@ -58,7 +58,7 @@ namespace dxf_hatch_poly
         virtual void OnVisitPolyLine(CDXFHatchPolylineBoundary *pBoundry) override {
             ASSERT(pBoundry);    
             std::vector<CDXFGeBulgePoint2D> vertices;
-			pBoundry->GetVertices(vertices);
+            pBoundry->GetVertices(vertices);
             typedef std::vector<CDXFGeBulgePoint2D>::const_iterator CIt;
             CIt end_it = vertices.end();
             CDXFGePoint2D point_2d;
@@ -78,7 +78,7 @@ namespace dxf_hatch_poly
     public:
         virtual void OnVisitEdgeArc(CDXFBoundaryEdgeArc &edge) override {
             CDXF2DLineVector lines;
-		    CArcGenerator::ConvertArcToLines(lines, edge.m_centerPoint.m_x, edge.m_centerPoint.m_y, edge.m_dStartAngle, edge.m_dEndAngle, edge.m_dRadius);   
+            CArcGenerator::ConvertArcToLines(lines, edge.m_centerPoint.m_x, edge.m_centerPoint.m_y, edge.m_dStartAngle, edge.m_dEndAngle, edge.m_dRadius);   
             std::for_each(lines.begin(), lines.end(), *this);
         }
 
@@ -92,9 +92,9 @@ namespace dxf_hatch_poly
         }
 
         virtual void OnVisitEdgeSpline(CDXFBoundaryEdgeSpline &edge) override {
-			for (const auto& controlPoint : edge.m_controlPointsArray) {
-				m_pPoly->push_back(Get3dPoint(controlPoint.m_point));
-			}
+            for (const auto& controlPoint : edge.m_controlPointsArray) {
+                m_pPoly->push_back(Get3dPoint(controlPoint.m_point));
+            }
         }
 
     //  Attributes
@@ -107,143 +107,143 @@ namespace dxf_hatch_poly
         template <class TPoint>
         inline void CalcBoundRectangle(const TPoint points[], size_t nCount, TPoint &ptMin, TPoint &ptMax)
         {
-	        if (nCount < 1)  {
-		        return;
-	        }
-	        
-	        double dXMin = points[0].x, dXMax = points[0].x; 
-	        double dYMin = points[0].y, dYMax = points[0].y;
+            if (nCount < 1)  {
+                return;
+            }
+            
+            double dXMin = points[0].x, dXMax = points[0].x; 
+            double dYMin = points[0].y, dYMax = points[0].y;
 
-	        for (size_t i = 1; i < nCount; ++i)
-	        {
-		        dXMin = std::min(points[i].x, dXMin);
-		        dXMax = std::max(points[i].x, dXMax);
-		        dYMin = std::min(points[i].y, dYMin);
-		        dYMax = std::max(points[i].y, dYMax);
-	        }
+            for (size_t i = 1; i < nCount; ++i)
+            {
+                dXMin = std::min(points[i].x, dXMin);
+                dXMax = std::max(points[i].x, dXMax);
+                dYMin = std::min(points[i].y, dYMin);
+                dYMax = std::max(points[i].y, dYMax);
+            }
 
-	        ptMin.x = dXMin;
+            ptMin.x = dXMin;
             ptMin.y = dYMin;
-	        ptMax.x = dXMax; 
+            ptMax.x = dXMax; 
             ptMax.y = dYMax;
 
         }
 
         // calculates halfplane of vector v with respect to v1 (when they start in the same point)
-	    template <typename T>
-	    inline int32_t Halfplane(const T &cx1, const T &cy1, const T &cx2, const T &cy2) {
-		    const double diff = (cx1 * cy2 - cx2 * cy1);
-		    if (diff < 0) {
-			    return (diff < -dxf_math::sqeps)?(-1):(0);
+        template <typename T>
+        inline int32_t Halfplane(const T &cx1, const T &cy1, const T &cx2, const T &cy2) {
+            const double diff = (cx1 * cy2 - cx2 * cy1);
+            if (diff < 0) {
+                return (diff < -dxf_math::sqeps)?(-1):(0);
             }
-		    else  {
-			    return (diff > dxf_math::sqeps)?(1):(0);
+            else  {
+                return (diff > dxf_math::sqeps)?(1):(0);
             }
         }
 
         // calculates halfplane of point pt with respect to line (pt1, pt2)
         template <class T2DPoint>
-	    inline int32_t Halfplane(const T2DPoint &pt, const T2DPoint &pt1, const T2DPoint &pt2) {
+        inline int32_t Halfplane(const T2DPoint &pt, const T2DPoint &pt1, const T2DPoint &pt2) {
             const double cx1 = pt.x  - pt1.x;
             const double cy1 = pt.y  - pt1.y;
             const double cx2 = pt2.x - pt1.x;
             const double cy2 = pt2.y - pt1.y;
-		    return Halfplane(cx1, cy1, cx2, cy2);
-	    }
+            return Halfplane(cx1, cy1, cx2, cy2);
+        }
 
         // checks if three points lie in one line
-	    template <class T2DPoint>
-	    inline bool PointInLine(const T2DPoint& pt1, const T2DPoint& pt2, const T2DPoint& pt3) {
-		    return (Halfplane(pt1, pt2, pt3) == 0);
-	    }
+        template <class T2DPoint>
+        inline bool PointInLine(const T2DPoint& pt1, const T2DPoint& pt2, const T2DPoint& pt3) {
+            return (Halfplane(pt1, pt2, pt3) == 0);
+        }
 
         // use this function instead PointInSegment, when you know, when points are in one line
         // if pt == pt1 or pt == pt2 -> true will be returned also
-	    template <class T2DPoint>
-	    inline bool PointInSegment2(const T2DPoint& pt, const T2DPoint& pt1, const T2DPoint& pt2)
-	    {
-		    if (pt1.x > pt2.x + dxf_math::eps)
-		    {
-			    return (pt.x > pt2.x - dxf_math::eps && pt.x < pt1.x + dxf_math::eps);
-		    }
-		    else if (pt1.x < pt2.x - dxf_math::eps)
-		    {
-			    return (pt.x < pt2.x + dxf_math::eps && pt.x > pt1.x - dxf_math::eps);			
-		    }
-		    else
-		    {
-			    if (pt1.y > pt2.y)
+        template <class T2DPoint>
+        inline bool PointInSegment2(const T2DPoint& pt, const T2DPoint& pt1, const T2DPoint& pt2)
+        {
+            if (pt1.x > pt2.x + dxf_math::eps)
+            {
+                return (pt.x > pt2.x - dxf_math::eps && pt.x < pt1.x + dxf_math::eps);
+            }
+            else if (pt1.x < pt2.x - dxf_math::eps)
+            {
+                return (pt.x < pt2.x + dxf_math::eps && pt.x > pt1.x - dxf_math::eps);            
+            }
+            else
+            {
+                if (pt1.y > pt2.y)
                 {
-				    return (pt.y > pt2.y - dxf_math::eps && pt.y < pt1.y + dxf_math::eps);
+                    return (pt.y > pt2.y - dxf_math::eps && pt.y < pt1.y + dxf_math::eps);
                 }
-			    else
+                else
                 {
-				    return (pt.y < pt2.y + dxf_math::eps && pt.y > pt1.y - dxf_math::eps);
+                    return (pt.y < pt2.y + dxf_math::eps && pt.y > pt1.y - dxf_math::eps);
                 }
-		    }
-	    }
+            }
+        }
 
         // checks if the point is inside polygon
-	    template <class T2DPoint>
-	    inline bool PointInsidePolygon(const T2DPoint &pt, const T2DPoint poly[], size_t cnt)
-	    {
-		    if (cnt < 3)
-		    {
-			    return false;
-		    }
-		    
-		    T2DPoint pt1; 
+        template <class T2DPoint>
+        inline bool PointInsidePolygon(const T2DPoint &pt, const T2DPoint poly[], size_t cnt)
+        {
+            if (cnt < 3)
+            {
+                return false;
+            }
+            
+            T2DPoint pt1; 
             pt1.x = pt.x - 1.0;
             pt1.y = pt.y - 1.0;
 
-		    for (size_t i1 = 0; i1 < cnt; i1++)
-		    {
-			    if (poly[i1].x < pt1.x)
-				    pt1.x = poly[i1].x - 1.0;
-			    if (poly[i1].y < pt1.y)
-				    pt1.y = poly[i1].y - 1.0;
-		    }
+            for (size_t i1 = 0; i1 < cnt; i1++)
+            {
+                if (poly[i1].x < pt1.x)
+                    pt1.x = poly[i1].x - 1.0;
+                if (poly[i1].y < pt1.y)
+                    pt1.y = poly[i1].y - 1.0;
+            }
 
-		    int32_t* hpl = new int32_t[cnt];
-		    for (size_t i3 = 0; i3 < cnt; i3++)
-			    hpl[i3] = Halfplane(poly[i3], pt, pt1);
-		    
-		    int32_t intcnt = 0;
-		    for (size_t i4 = 0; i4 < cnt; i4++)
-		    {
-			    if (hpl[i4] != 0)
-			    {
-				    size_t i2 = (i4 == cnt-1)?(0):(i4+1);
-				    if (hpl[i2] == 0)
-				    {
-					    while (hpl[i2] == 0 && PointInSegment2(poly[i2], pt, pt1))	
-						    i2 = (i2 == cnt-1)?(0):(i2+1);
+            int32_t* hpl = new int32_t[cnt];
+            for (size_t i3 = 0; i3 < cnt; i3++)
+                hpl[i3] = Halfplane(poly[i3], pt, pt1);
+            
+            int32_t intcnt = 0;
+            for (size_t i4 = 0; i4 < cnt; i4++)
+            {
+                if (hpl[i4] != 0)
+                {
+                    size_t i2 = (i4 == cnt-1)?(0):(i4+1);
+                    if (hpl[i2] == 0)
+                    {
+                        while (hpl[i2] == 0 && PointInSegment2(poly[i2], pt, pt1))    
+                            i2 = (i2 == cnt-1)?(0):(i2+1);
 
-					    if (hpl[i2] != 0 && hpl[i2] != hpl[i4])
-						    intcnt++;
-				    }
-				    else
-				    {
-					    if (hpl[i2] != hpl[i4] &&
-						    abs(Halfplane(pt, poly[i4], poly[i2]) -
-						    Halfplane(pt1, poly[i4], poly[i2])) == 2)
-						    intcnt++;
-				    }			
-			    }
-		    }
+                        if (hpl[i2] != 0 && hpl[i2] != hpl[i4])
+                            intcnt++;
+                    }
+                    else
+                    {
+                        if (hpl[i2] != hpl[i4] &&
+                            abs(Halfplane(pt, poly[i4], poly[i2]) -
+                            Halfplane(pt1, poly[i4], poly[i2])) == 2)
+                            intcnt++;
+                    }            
+                }
+            }
 
-		    delete[] hpl;
+            delete[] hpl;
 
-			// Check if intcnt is even number
-		    return ((intcnt & 1) == 1);
-	    }
+            // Check if intcnt is even number
+            return ((intcnt & 1) == 1);
+        }
 
         template <class T2DPoint, class TPoly>
-	    inline bool PointInsidePolygon(const T2DPoint &pt, TPoly &poly)
+        inline bool PointInsidePolygon(const T2DPoint &pt, TPoly &poly)
         {
-			if (poly.empty()) {
-				return false;
-			}
+            if (poly.empty()) {
+                return false;
+            }
 
             return PointInsidePolygon(pt, &poly[0], poly.size());
         }
@@ -251,42 +251,42 @@ namespace dxf_hatch_poly
         template <class TPoint, class TSegments>
         inline void GetSegmentsFromPoints(const TPoint points[], size_t nCnt, TSegments &segments)
         {
-	        segments.resize(nCnt);
+            segments.resize(nCnt);
             TSegments::value_type seg;
-	        for (size_t i = 0; i < nCnt; ++i)  
-	        {
-		        TPoint pt1 = points[i];
-		        TPoint pt2 = (i == nCnt - 1) ? points[0] : points[i + 1];
+            for (size_t i = 0; i < nCnt; ++i)  
+            {
+                TPoint pt1 = points[i];
+                TPoint pt2 = (i == nCnt - 1) ? points[0] : points[i + 1];
                 seg.first.x  =  pt1.x;
                 seg.first.y  =  pt1.y;
                 seg.second.x =  pt2.x;
                 seg.second.y =  pt2.y;
-		        segments[i] = seg;
-	        }
+                segments[i] = seg;
+            }
         }
 
         template <class T2DPoint>
-	    inline void MovePointOnLine(const T2DPoint &pt1, const T2DPoint &pt2, T2DPoint &point, double offs)
-	    {
-		    double b = pt2.x - pt1.x;
-		    double a = pt2.y - pt1.y;
-		    ASSERT( !dxf_math::eq0(a) || !dxf_math::eq0(b) );
-		    double ratio = offs / ::sqrt(a*a+b*b);
-		    
-		    point.x += b * ratio;
-		    point.y += a * ratio;
-	    }
+        inline void MovePointOnLine(const T2DPoint &pt1, const T2DPoint &pt2, T2DPoint &point, double offs)
+        {
+            double b = pt2.x - pt1.x;
+            double a = pt2.y - pt1.y;
+            ASSERT( !dxf_math::eq0(a) || !dxf_math::eq0(b) );
+            double ratio = offs / ::sqrt(a*a+b*b);
+            
+            point.x += b * ratio;
+            point.y += a * ratio;
+        }
 
         // vector is rotated by specified angle clockwise
         template <class TVector>
         inline void RotateVector(TVector &vect, double angle)
-	    {
-		    double sinx = sin(angle);
-		    double cosx = cos(angle);
-		    TVector old = vect;
-		    vect.x = old.x * cosx - old.y * sinx;
-		    vect.y = old.x * sinx + old.y * cosx;
-	    }
+        {
+            double sinx = sin(angle);
+            double cosx = cos(angle);
+            TVector old = vect;
+            vect.x = old.x * cosx - old.y * sinx;
+            vect.y = old.x * sinx + old.y * cosx;
+        }
 
         template <class TPoint, class TVector>
         inline TPoint MovePointByVect(const TPoint &pt, const TVector &v)
@@ -298,7 +298,7 @@ namespace dxf_hatch_poly
         }
 
         inline double DegToRad(double deg) {
-	        return deg / 180.0 * DXF_PI;	
+            return deg / 180.0 * DXF_PI;    
         }
     };
 
@@ -366,10 +366,10 @@ namespace dxf_hatch_poly
         const std::vector<CDXFHatch::CDXFHatchPattern> &patternLines = entity.m_patternLines;
 
         CHatchPoly::value_type  mi, ma;
-		if (!poly.empty())
-		{
-			geom::CalcBoundRectangle(&poly[0], poly.size(), mi, ma);
-		}
+        if (!poly.empty())
+        {
+            geom::CalcBoundRectangle(&poly[0], poly.size(), mi, ma);
+        }
 
         for (auto it = patternLines.begin(); it != patternLines.end(); ++it) 
         { 
@@ -417,10 +417,10 @@ namespace dxf_hatch_poly
             bool bOffset = false;      
             
             CDXFMatrix3D trans_matrix;
-	        trans_matrix.SetIdentity();
-	        trans_matrix.m14 = dStartX;
-	        trans_matrix.m24 = dStartY;
-	        trans_matrix.m34 = 0.;    
+            trans_matrix.SetIdentity();
+            trans_matrix.m14 = dStartX;
+            trans_matrix.m24 = dStartY;
+            trans_matrix.m34 = 0.;    
             // we are going here along y axis and x axis -> this is not complete and fine
             // maybe algorithm should be based not on the axis, but on the line
             // and this line start point should be on the 0, 0
@@ -628,63 +628,11 @@ namespace dxf_hatch_poly
         }
     };
 
-    namespace geom
-    {
-        // checks if the square distance of point pt to segment (pt1, pt2) is less than sqdist
-	    template <class T2DPoint>
-	    inline bool CloseToSegment(const T2DPoint &pt, const T2DPoint &pt1, const T2DPoint &pt2, double sqdist)
-	    {
-		    double a = pt2.x - pt1.x;
-		    double b = pt2.y - pt1.y;
-		    double dx = pt.x - pt1.x;
-		    double dy = pt.y - pt1.y;
-		    double sc = a*dx + b*dy;
-		    
-		    if (sc < 0)	return false;
-
-		    double sq = a*a + b*b;
-		    assert(sq > sqeps);
-
-		    if (sc > sq) return false;
-
-		    double d1 = dx*dx + dy*dy;
-		    return (d1 - sc*sc / sq <= sqdist);	
-	    }
-
-        static double eps_2DSize = 0.0001;
-        // returns 1 if the point is strictly inside polygon
-	    // returns 0 if point is on polygon
-	    // returns -1 otherwise
-	    template <class T2DPoint>
-	    inline int32_t PointInsidePolygonEx(const T2DPoint &pt, const T2DPoint poly[], size_t nCnt)
-        {
-		    if ( nCnt < 3 ) {
-			    return -1;
-		    }
-
-		    for (size_t i = 0; i < nCnt; i++)
-		    {
-			    int32_t nFirst = (i == 0) ? nCnt - 1 : i - 1;
-			    int32_t nSecond = i;
-			    if ( CloseToSegment(pt, poly[nFirst], poly[nSecond], eps_2DSize) )
-			    {
-				    return 0;
-			    }
-		    }
-
-		    if ( PointInsidePolygon(pt, poly, nCnt) ) {
-			    return 1;
-		    }
-
-		    return -1;
-	    }
-    };
-
     // checks if two colinear vectors have the same direction
-	template <typename T>
-	inline bool SameDirection(const T &x1, const T &y1, const T &x2, const T &y2)  {
-		return ((dxf_math::sign(x1) == dxf_math::sign(x2)) && (dxf_math::sign(y2) == dxf_math::sign(y1)));		
-	}
+    template <typename T>
+    inline bool SameDirection(const T &x1, const T &y1, const T &x2, const T &y2)  {
+        return ((dxf_math::sign(x1) == dxf_math::sign(x2)) && (dxf_math::sign(y2) == dxf_math::sign(y1)));        
+    }
 
     class CSortByLine
     {
@@ -721,32 +669,32 @@ namespace dxf_hatch_poly
     }
 
     // removes unnecessary point from polygon, leaves only corner points
-	template <class T2DPointArray>
-	inline void RemovePointsOnEdges(T2DPointArray &poly)
-	{
-		int32_t cnt = poly.size();
+    template <class T2DPointArray>
+    inline void RemovePointsOnEdges(T2DPointArray &poly)
+    {
+        int32_t cnt = poly.size();
 
-		if (cnt < 3) {
-			return;
-		}
+        if (cnt < 3) {
+            return;
+        }
 
-		T2DPointArray poly2;	
-		poly2.resize(cnt);
-		int32_t detcnt = 0;
-		for (auto i1 = 0; i1 < cnt; ++i1)
-		{
-			int32_t i2 = (i1 == 0)?(cnt-1):(i1-1);
-			int32_t i3 = (i1 == cnt-1)?(0):(i1+1);
-			if (!PointInLine(poly[i1], poly[i2], poly[i3]))
-			{
-				poly2[detcnt] = poly[i1];
-				detcnt++;
-			}
-		}
+        T2DPointArray poly2;    
+        poly2.resize(cnt);
+        int32_t detcnt = 0;
+        for (auto i1 = 0; i1 < cnt; ++i1)
+        {
+            int32_t i2 = (i1 == 0)?(cnt-1):(i1-1);
+            int32_t i3 = (i1 == cnt-1)?(0):(i1+1);
+            if (!PointInLine(poly[i1], poly[i2], poly[i3]))
+            {
+                poly2[detcnt] = poly[i1];
+                detcnt++;
+            }
+        }
 
-		poly = poly2;
-		poly.resize(detcnt);
-	}
+        poly = poly2;
+        poly.resize(detcnt);
+    }
 
     void GetPoly(const CDXFHatch &entity, CHatchPoly &points)
     {
@@ -765,10 +713,10 @@ namespace dxf_hatch_poly
         GenerateCarpet(entity, points, segments);
 
         CHatchSegments poly_segments;
-		if (!points.empty())
-		{
-			geom::GetSegmentsFromPoints(&points[0], points.size(), poly_segments);
-		}
+        if (!points.empty())
+        {
+            geom::GetSegmentsFromPoints(&points[0], points.size(), poly_segments);
+        }
 
         {
             typedef CHatchSegments::const_iterator CIt;

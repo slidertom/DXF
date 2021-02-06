@@ -3,47 +3,47 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "DXFDLLAPI.h"
+    #include "DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_VIEW_TABLE_H__
-	#include "tables/DXFViewTable.h"
+    #include "tables/DXFViewTable.h"
 #endif
 
 #ifndef __DXF_LINE_TYPETABLE_H__
-	#include "tables/DXFLineTypeTable.h"	
+    #include "tables/DXFLineTypeTable.h"    
 #endif
 
 #ifndef __DXF_LAYER_TABLE_H__
-	#include "tables/DXFLayerTable.h"	
+    #include "tables/DXFLayerTable.h"    
 #endif
 
 #ifndef __DXF_BLOCK_TABLE_H__
-	#include "tables/DXFBlockTable.h"	
+    #include "tables/DXFBlockTable.h"    
 #endif
 
 #ifndef __DXF_APPIDTABLE_H__
-	#include "tables/DXFAppIDTable.h"
+    #include "tables/DXFAppIDTable.h"
 #endif
 
 #ifndef __DXF_UCS_TABLE_H__
-	#include "tables/DXFUCSTable.h"
+    #include "tables/DXFUCSTable.h"
 #endif
 
 #ifndef __DXF_TEXT_STYLE_TABLE_H__
-	#include "tables/DXFTextStyleTable.h"
+    #include "tables/DXFTextStyleTable.h"
 #endif
 
 #ifndef __DXF_DIM_STYLE_TABLE_H__
-	#include "tables/DXFDimStyleTable.h"
+    #include "tables/DXFDimStyleTable.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "base/DXF3DPoint.h"
+    #include "base/DXF3DPoint.h"
 #endif
 
 #ifndef __DXF_OBJECTID_H__
-	#include "base/DXFObjectID.h"
+    #include "base/DXFObjectID.h"
 #endif
 
 #include "array"
@@ -85,51 +85,66 @@ public:
     int32_t m_nHandSeed         {1};
 };
 
-class DXFDLLAPI CDXFDatabase  
+class DXFDLLAPI CDXFDatabase final  
 {
-	friend class CDXFBlockTableRecord;
-	
+    friend class CDXFBlockTableRecord;
+    
 // Construction/Destruction
 public:
-	CDXFDatabase();
-	~CDXFDatabase();
+    CDXFDatabase(const CDXFDatabase &x) = delete;
+    CDXFDatabase(CDXFDatabase &&x) = delete;
+    CDXFDatabase();
+    ~CDXFDatabase();
+
+// Operators
+public:
+    CDXFDatabase &operator=(const CDXFDatabase &dxf) = delete;
 
 // Operations
 public:
-	void AddObject(CDXFObject *pObject, CDXFObjectID &id);
+    void AddObject(CDXFObject *pObject, CDXFObjectID &id);
     bool AddObject(CDXFObject *pObject, CDXFObjectID &id, unsigned long ulHandle);
-	bool GetObjectID(CDXFObjectID &id, unsigned long ulHandle) const;
+    bool GetObjectID(CDXFObjectID &id, unsigned long ulHandle) const;
 
-	CDXFViewTable      *GetViewTable() const;
+    CDXFViewTable      *GetViewTable() const;
     void                SetViewTable(const CDXFObjectID &id);
 
-	CDXFViewportTable  *GetViewPortTable() const;
+    CDXFViewportTable  *GetViewPortTable() const;
     void                SetViewPortTable(const CDXFObjectID &id);
 
-	CDXFUCSTable       *GetUCSTable() const;
+    CDXFUCSTable       *GetUCSTable() const;
     void                SetUCSTable(const CDXFObjectID &id);
 
-	CDXFTextStyleTable *GetTextStyleTable() const;
+    CDXFTextStyleTable *GetTextStyleTable() const;
     void                SetTextStyleTable(const CDXFObjectID &id);
 
-	CDXFDimStyleTable  *GetDimStyleTable() const;
+    CDXFDimStyleTable  *GetDimStyleTable() const;
     void                SetDimStyleTable(const CDXFObjectID &id);
 
-	CDXFAppIDTable     *GetAppIDTable() const;
+    CDXFAppIDTable     *GetAppIDTable() const;
     void                SetAppIDTable(const CDXFObjectID &id);
 
-	CDXFLineTypeTable  *GetLineTypeTable() const;
+    CDXFLineTypeTable  *GetLineTypeTable() const;
     void                SetLineTypeTable(const CDXFObjectID &id);
 
-	CDXFLayerTable     *GetLayerTable() const;
+    CDXFLayerTable     *GetLayerTable() const;
     void                SetLayerTable(const CDXFObjectID &id);
 
-	CDXFBlockTable     *GetBlockTable() const;
+    CDXFBlockTable     *GetBlockTable() const;
     void                SetBlockTable(const CDXFObjectID &id);
 
-	CDXFDictionary     *GetNamedObjectsDictionary();
+    CDXFDictionary     *GetNamedObjectsDictionary();
 
-	CDXFObjectID GetDXFObjectID(unsigned long ulHandle) const;
+    CDXFObjectID GetDXFObjectID(unsigned long ulHandle) const;
+
+    CDXFObjectID GetTextStyleIdByName(const char *sTextStyleName) const;
+    CDXFObjectID GetLayerIdByName(const char *sLayerName) const;
+    CDXFObjectID GetDimStyleIdByName(const char *sDimStyleName) const;
+
+    // returns default object ids if item is not found by name
+    CDXFObjectID GetTextStyleIdByNameEx(const char *sTextStyleName) const;
+    CDXFObjectID GetLayerIdByNameEx(const char *sLayerName) const;
+    CDXFObjectID GetDimStyleIdByNameEx(const char *sDimStyleName) const;
 
 public:
     bool OpenDatabase(const wchar_t *sFileName);
@@ -141,27 +156,27 @@ public:
 private:
     void DeleteAllObjects();
     bool DeleteObject(const CDXFObjectID &id);
-	void InitDatabase();
+    void InitDatabase();
 
 // Attributes
 public:
-	CDXFVariables m_vars;
+    CDXFVariables m_vars;
 
 public:
-   	enum DXF_TABLE
-	{
-		DXF_BLOCK_TABLE     = 0,
-		DXF_LINETYPE_TABLE  = 1,
-		DXF_LAYER_TABLE     = 2,
-		DXF_APPID_TABLE     = 3,
-		DXF_DIMSTYLE_TABLE  = 4,
-		DXF_TEXTSTYLE_TABLE = 5,
-		DXF_UCS_TABLE       = 6,
-		DXF_VIEW_TABLE      = 7,
-		DXF_VIEWPORT_TABLE  = 8,
+    enum DXF_TABLE
+    {
+        DXF_BLOCK_TABLE     = 0,
+        DXF_LINETYPE_TABLE  = 1,
+        DXF_LAYER_TABLE     = 2,
+        DXF_APPID_TABLE     = 3,
+        DXF_DIMSTYLE_TABLE  = 4,
+        DXF_TEXTSTYLE_TABLE = 5,
+        DXF_UCS_TABLE       = 6,
+        DXF_VIEW_TABLE      = 7,
+        DXF_VIEWPORT_TABLE  = 8,
 
-		DXF_TABLE_COUNT     = 9,
-	};
+        DXF_TABLE_COUNT     = 9,
+    };
 
 private:
     std::array<CDXFObjectID, DXF_TABLE_COUNT> m_tablesIDs;

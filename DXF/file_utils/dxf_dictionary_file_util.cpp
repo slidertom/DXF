@@ -43,7 +43,7 @@ namespace internal
     }
 };
 
-class CDXFDictonaryWriterVisitor : public CDXFDictionaryVisitorAbs
+class CDXFDictonaryWriterVisitor final : public CDXFDictionaryVisitorAbs
 {
 // Construction/Destruction
 public:
@@ -65,42 +65,38 @@ private:
     CDXFWriter &m_writer;
 };
 
-class CDXFObjectWriterVisitor : public CDXFObjectVisitorAbs
+class CDXFObjectWriterVisitor final : public CDXFObjectVisitorAbs
 {
+// Construction/Destruction
 public:
     CDXFObjectWriterVisitor(CDXFWriter &writer, const CDXFDatabase *pDB) : m_writer(writer), m_pDB(pDB) { }
     virtual ~CDXFObjectWriterVisitor() { }
 
+// Overrides
 public:
-    virtual void VisitDictionary(CDXFDictionary &dict) override
-    {
+    virtual void VisitDictionary(CDXFDictionary &dict) override {
         dxf_dict_file_util::PreWriteToFile(m_writer, dict, m_pDB);
     }
 
-    virtual void VisitDXFLineStyle(CDXFMlineStyle &line) override
-    {
+    virtual void VisitDXFLineStyle(CDXFMlineStyle &line) override {
         dxf_mline_style_file_util::WriteToFile(m_writer, line);
     }
 
-    virtual void VisitDXFPlaceHolder(CDXFPlaceHolder &placeholder) override
-    {
+    virtual void VisitDXFPlaceHolder(CDXFPlaceHolder &placeholder) override {
         dxf_placeholder_file_util::WriteToFile(m_writer, placeholder);
     }
 
-    virtual void VisitDXFEntity(CDXFEntity &entity) override
-    {
+    virtual void VisitDXFEntity(CDXFEntity &entity) override {
         //should not go here
         ASSERT(FALSE);
     }
 
-    virtual void VisitDXFSymbolTableRecord(CDXFSymbolTableRecord &record)
-    {
+    virtual void VisitDXFSymbolTableRecord(CDXFSymbolTableRecord &record) {
         //should not go here
         ASSERT(FALSE);
     }
 
-    virtual void VisitSymbolTable(CDXFSymbolTable &table)
-    {
+    virtual void VisitSymbolTable(CDXFSymbolTable &table) {
         //should not go here
         ASSERT(FALSE);
     }

@@ -9,33 +9,33 @@
 
 enum class EDXFLineWeight : short int
 {
-	LW_000 = 0,
-	LW_005 = 5,
-	LW_009 = 9,
-	LW_013 = 13,
-	LW_015 = 15,
-	LW_018 = 18,
-	LW_020 = 20,
-	LW_025 = 25,
-	LW_030 = 30,
-	LW_035 = 35,
-	LW_040 = 40,
-	LW_050 = 50,
-	LW_053 = 53,
-	LW_060 = 60,
-	LW_070 = 70,
-	LW_080 = 80,
-	LW_090 = 90,
-	LW_100 = 100,
-	LW_106 = 106,
-	LW_120 = 120,
-	LW_140 = 140,
-	LW_158 = 158,
-	LW_200 = 200,
-	LW_211 = 211,
-	LW_ByLayer = -1,
-	LW_ByBlock = -2,
-	LW_Default = -3,
+    LW_000 = 0,
+    LW_005 = 5,
+    LW_009 = 9,
+    LW_013 = 13,
+    LW_015 = 15,
+    LW_018 = 18,
+    LW_020 = 20,
+    LW_025 = 25,
+    LW_030 = 30,
+    LW_035 = 35,
+    LW_040 = 40,
+    LW_050 = 50,
+    LW_053 = 53,
+    LW_060 = 60,
+    LW_070 = 70,
+    LW_080 = 80,
+    LW_090 = 90,
+    LW_100 = 100,
+    LW_106 = 106,
+    LW_120 = 120,
+    LW_140 = 140,
+    LW_158 = 158,
+    LW_200 = 200,
+    LW_211 = 211,
+    LW_ByLayer = -1,
+    LW_ByBlock = -2,
+    LW_Default = -3,
 };
 
 namespace dxf_line_width_utils
@@ -140,11 +140,11 @@ namespace dxf_line_width_utils
         }
         else if (EDXFLineWeight::LW_ByBlock == eEntytiLineWeight) {
             const CDXFObjectID &id = entity.GetOwnerID();
-	        CDXFBlockTableRecord *pBlock = (CDXFBlockTableRecord *)id.GetObject();
-	        if (pBlock) {
+            CDXFBlockTableRecord *pBlock = (CDXFBlockTableRecord *)id.GetObject();
+            if (pBlock) {
                 const EDXFLineWeight eLineWeightBlock = pBlock->GetLineWeight();
                 return internal::GetWidthMM(eLineWeightBlock);
-	        }
+            }
 
             return internal::GetWidthMM(EDXFLineWeight::LW_100);
         }
@@ -155,12 +155,12 @@ namespace dxf_line_width_utils
                 if (pLayer) {
                     const EDXFLineWeight eLineWeightLayer = pLayer->GetLineWeight();
                     return internal::GetWidthMM(eLineWeightLayer);
-		        }
+                }
             }
             return internal::GetWidthMM(EDXFLineWeight::LW_100);
         }
 
-	    return internal::GetWidthMM(eEntytiLineWeight);
+        return internal::GetWidthMM(eEntytiLineWeight);
     }
 }
 

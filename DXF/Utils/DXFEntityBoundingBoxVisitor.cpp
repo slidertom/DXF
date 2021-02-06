@@ -4,10 +4,14 @@
 #include "entity/DXFCircle.h"
 #include "entity/DXFLine.h"
 #include "entity/DXFMText.h"
+#include "entity/DXFText.h"
 #include "entity/DXFPolyline.h"
 #include "entity/DXFSolid.h"
+#include "entity/DXFPoint.h"
 #include "entity/DXFDimension.h"
 #include "entity/DXFInsert.h"
+#include "entity/DXFArc.h"
+#include "entity/DXFEllipse.h"
 
 void CDXFEntityBoundingBoxVisitor::VisitDXFCircle(CDXFCircle &entity)
 { 
@@ -21,6 +25,32 @@ void CDXFEntityBoundingBoxVisitor::VisitDXFCircle(CDXFCircle &entity)
     minPoint.z  = point_center.z;
     maxPoint    = point_center + dRadius;
     maxPoint.z  = point_center.z;
+
+    m_box.SetMinPoint(minPoint);
+    m_box.SetMaxPoint(maxPoint);
+}
+
+void CDXFEntityBoundingBoxVisitor::VisitDXFArc(CDXFArc &entity)
+{ 
+    CDXF3DPoint minPoint(entity.m_ptCenter);
+    CDXF3DPoint maxPoint(entity.m_ptCenter);
+
+    const CDXF3DPoint point_center = entity.GetCenterPoint();
+    const double dRadius           = entity.GetRadius();
+
+    minPoint    = point_center - dRadius;
+    minPoint.z  = point_center.z;
+    maxPoint    = point_center + dRadius;
+    maxPoint.z  = point_center.z;
+
+    m_box.SetMinPoint(minPoint);
+    m_box.SetMaxPoint(maxPoint);
+}
+
+void CDXFEntityBoundingBoxVisitor::VisitDXFEllipse(CDXFEllipse &entity)
+{
+    CDXF3DPoint minPoint(entity.GetCenterPoint());
+    CDXF3DPoint maxPoint(entity.GetCenterPoint());
 
     m_box.SetMinPoint(minPoint);
     m_box.SetMaxPoint(maxPoint);
@@ -76,6 +106,23 @@ void CDXFEntityBoundingBoxVisitor::VisitDXFMText(CDXFMText &entity)
     m_box.SetMaxPoint(maxPoint);
 }
 
+void CDXFEntityBoundingBoxVisitor::VisitDXFText(CDXFText &entity)
+{
+    CDXF3DPoint minPoint(entity.GetInsertPoint());
+    CDXF3DPoint maxPoint(entity.GetInsertPoint());
+
+    maxPoint.y = maxPoint.y + entity.GetTextHeight();
+
+    m_box.SetMinPoint(entity.GetInsertPoint());
+    m_box.SetMaxPoint(entity.GetInsertPoint());
+}
+
+void CDXFEntityBoundingBoxVisitor::VisitDXFPoint(CDXFPoint &entity)
+{
+    m_box.SetMinPoint(entity.m_point);
+    m_box.SetMaxPoint(entity.m_point);
+}
+
 void CDXFEntityBoundingBoxVisitor::VisitDXFPolyline(CDXFPolyline &entity)
 {
     CDXF3DPoint min, max;
@@ -127,25 +174,31 @@ void CDXFEntityBoundingBoxVisitor::VisitDXFSolid(CDXFSolid &entity)
 
     for (auto i = 0; i < entity.GetNumPoints(); ++i)
     {
-        CDXF3DPoint &point = entity.GetPoint(i);
+        const CDXF3DPoint &point = entity.GetPoint(i);
 
-        if (point.x < minPoint.x)
+        if (point.x < minPoint.x) {
             minPoint.x = point.x;
+        }
 
-        if (point.y < minPoint.y)
+        if (point.y < minPoint.y) {
             minPoint.y = point.y;
+        }
 
-        if (point.z < minPoint.z)
+        if (point.z < minPoint.z) {
             minPoint.z = point.z;
+        }
 
-        if (point.x > maxPoint.x)
+        if (point.x > maxPoint.x) {
             maxPoint.x = point.x;
+        }
 
-        if (point.y > maxPoint.y)
+        if (point.y > maxPoint.y) {
             maxPoint.y = point.y;
+        }
 
-        if (point.z > maxPoint.z)
+        if (point.z > maxPoint.z) {
             maxPoint.z = point.z;
+        }
     }
 
     m_box.SetMinPoint(minPoint);
@@ -181,7 +234,7 @@ void CDXFEntityBoundingBoxVisitor::VisitDXFInsert(CDXFInsert &entity)
     points[6].SetValues(points[0].x, points[0].y, points[4].z);
     points[7].SetValues(points[0].x, points[4].y, points[4].z);
 
-    int32_t	i;
+    int32_t i;
 
     // Transform all bounding box points
     for (i = 0; i < 8; ++i) {
@@ -241,17 +294,17 @@ const CDXFBoundingBox &CDXFEntityBoundingBoxVisitor::GetBoundingBox() const
 CDXFBoundingBox CDXFEntityBoundingBoxVisitor::GetBoundingBox(const CDXFBlockTableRecord &block)
 {
     CDXFBoundingBox bbox;
-	
-	bbox.SetMinPoint(1.E+10,   1.E+10,  1.E+10);
-	bbox.SetMaxPoint(-1.E+10, -1.E+10, -1.E+10);
+    
+    bbox.SetMinPoint(1.E+10,   1.E+10,  1.E+10);
+    bbox.SetMaxPoint(-1.E+10, -1.E+10, -1.E+10);
 
     CDXFEntityBoundingBoxVisitor vis;
 
-	for (const auto &objectID : block.m_entities) {
-		CDXFEntity *pEntity = (CDXFEntity *)objectID.GetObject();
+    for (const auto &objectID : block.m_entities) {
+        CDXFEntity *pEntity = (CDXFEntity *)objectID.GetObject();
         pEntity->Accept(vis);
-		bbox.Union(vis.GetBoundingBox());
-	}
+        bbox.Union(vis.GetBoundingBox());
+    }
 
-	return bbox;
+    return bbox;
 }

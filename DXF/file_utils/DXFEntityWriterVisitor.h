@@ -14,7 +14,7 @@ class CDXFEntityWriterVisitor: public CDXFEntityVisitor
 // Construction/Destruction
 public:
     CDXFEntityWriterVisitor(CDXFWriter &writer, CDXFDatabase *pDB);
-	virtual ~CDXFEntityWriterVisitor() { }
+    virtual ~CDXFEntityWriterVisitor() { }
 
 // Overrides
 protected:

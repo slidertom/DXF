@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_ENTITY_H__
-	#include "DXFEntity.h"
+    #include "DXFEntity.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "base/DXF3DPoint.h"
+    #include "base/DXF3DPoint.h"
 #endif
 
 #ifndef __DXF_ENTITY_VISITOR_H__
@@ -23,16 +23,16 @@ class CDXFEllipse : public CDXFEntity
 // Construction/Destruction
 public:
     CDXFEllipse() : CDXFEntity("ELLIPSE") { }
-	CDXFEllipse(const CDXF3DPoint &pointCenter, const CDXF3DPoint &pointEnd, double dMinorAxisRatio) : CDXFEntity("ELLIPSE"), 
+    CDXFEllipse(const CDXF3DPoint &pointCenter, const CDXF3DPoint &pointEnd, double dMinorAxisRatio) : CDXFEntity("ELLIPSE"), 
         m_ptCenter(pointCenter), m_pointEnd(pointEnd), m_dMinorAxisRatio(dMinorAxisRatio) { }
-	CDXFEllipse(const CDXFEllipse &ellipse) : CDXFEntity(ellipse, "ELLIPSE"),
+    CDXFEllipse(const CDXFEllipse &ellipse) : CDXFEntity(ellipse, "ELLIPSE"),
         m_ptCenter(ellipse.m_ptCenter), m_pointEnd(ellipse.m_pointEnd), m_dMinorAxisRatio(ellipse.m_dMinorAxisRatio),
         m_dStartValue(ellipse.m_dStartValue), m_dEndValue(ellipse.m_dEndValue) { }
     virtual ~CDXFEllipse() { }
 
 // Overrides
 public:
-	virtual void Accept(CDXFEntityVisitor &vis) override { vis.VisitDXFEllipse(*this); }
+    virtual void Accept(CDXFEntityVisitor &vis) override { vis.VisitDXFEllipse(*this); }
 
 // Operations
 public:
@@ -47,8 +47,8 @@ public:
 
 // Atttributes
 private:
-	CDXF3DPoint m_ptCenter;
-	CDXF3DPoint m_pointEnd;      // End point of major axis
+    CDXF3DPoint m_ptCenter;
+    CDXF3DPoint m_pointEnd;      // End point of major axis
 
     double m_dMinorAxisRatio {0.};
     double m_dStartValue     {0.};

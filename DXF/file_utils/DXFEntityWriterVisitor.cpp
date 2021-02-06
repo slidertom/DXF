@@ -81,7 +81,7 @@ class CDXFDimEntityWriterVisitor: public CDXFDimensionVisitor
 // Construction/Destruction
 public:
     CDXFDimEntityWriterVisitor(CDXFWriter &writer, CDXFDatabase *pDB) : m_writer(writer), m_pDB(pDB) {}
-	virtual ~CDXFDimEntityWriterVisitor() { }
+    virtual ~CDXFDimEntityWriterVisitor() { }
 
 // Overrides
 protected:

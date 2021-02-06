@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_SYMBOL_TABLE_RECORD_H__
-	#include "DXFSymbolTableRecord.h"
+    #include "DXFSymbolTableRecord.h"
 #endif
 
 #ifndef __DXF_LINE_WEIGHT_H__
@@ -56,6 +56,7 @@ public:
     unsigned char GetFlags() const { return m_fFlags; }
     void SetFlags(unsigned char fFlags) { m_fFlags = fFlags; }
 
+// Attributes
 private:
     EDXFColor      m_nColor           {EDXFColor::EDXFColorWhite};
     int32_t        m_nPlottable       {1};

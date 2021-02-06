@@ -331,7 +331,7 @@ namespace dxf_hatch_nonpoly_file_util
             m_writer.WriteFloatingPoint(edge.m_dRadius, 40);
             m_writer.WriteFloatingPoint(edge.m_dStartAngle, 50);
             m_writer.WriteFloatingPoint(edge.m_dEndAngle, 51);
-            m_writer.WriteFloatingPoint(edge.m_nCounterclockwise, 73);
+            m_writer.WriteNumber(edge.m_nCounterclockwise, 73);
         }
 
         virtual void OnVisitEdgeLine(CDXFBoundaryEdgeLine &edge) override

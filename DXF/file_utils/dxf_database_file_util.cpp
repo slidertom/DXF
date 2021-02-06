@@ -9,7 +9,7 @@
 #include "DXFDatabase.h"
 #include "DXFDictionary.h"
 
-#include "tables/DXFBlockTableRecord.h"	
+#include "tables/DXFBlockTableRecord.h"    
 #include "tables/DXFLayerTableRecord.h"
 #include "tables/DXFViewportTable.h"
 
@@ -536,7 +536,7 @@ namespace dxf_database_file_util
         }
 
         const std::string oldlocale = setlocale(LC_ALL, NULL);
-        setlocale(LC_ALL, "C");		// Otherwise floats are printed incorrectly
+        setlocale(LC_ALL, "C");        // Otherwise floats are printed incorrectly
 
         writer.Write("  0\nSECTION\n");
         writer.Write("  2\nHEADER\n");

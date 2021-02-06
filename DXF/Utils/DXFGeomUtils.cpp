@@ -5,6 +5,5 @@
 
 CDXFBoundingBox dxf_geom_utils::GetBlockBoundingBox(CDXFBlockTableRecord &block)
 {
-   	return CDXFEntityBoundingBoxVisitor::GetBoundingBox(block);
+    return CDXFEntityBoundingBoxVisitor::GetBoundingBox(block);
 }
-

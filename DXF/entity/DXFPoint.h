@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_ENTITY_H__
-	#include "DXFEntity.h"
+    #include "DXFEntity.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "base/DXF3DPoint.h"
+    #include "base/DXF3DPoint.h"
 #endif
 
 #ifndef __DXF_ENTITY_VISITOR_H__
@@ -25,11 +25,11 @@ public:
 
 // Overrides
 public:
-	virtual void Accept(CDXFEntityVisitor &vis) override { vis.VisitDXFPoint(*this); }
+    virtual void Accept(CDXFEntityVisitor &vis) override { vis.VisitDXFPoint(*this); }
 
 // Attributes
 public:
-	CDXF3DPoint m_point;
+    CDXF3DPoint m_point;
 };
 
 #endif

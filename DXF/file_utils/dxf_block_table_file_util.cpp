@@ -6,7 +6,7 @@
 #include "dxf_block_begin_file_util.h"
 
 #include "tables/DXFBlockTable.h"
-#include "tables/DXFBlockTableRecord.h"	
+#include "tables/DXFBlockTableRecord.h"    
 #include "entity/DXFBlockBegin.h"
 #include "DXFDatabase.h"
 

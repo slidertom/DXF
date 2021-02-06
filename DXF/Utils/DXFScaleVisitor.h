@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "../DXFDLLAPI.h"
+    #include "../DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_ENTITY_H__
-	#include "../entity/DXFEntity.h"
+    #include "../entity/DXFEntity.h"
 #endif
 
 #ifndef __DXF_ENTITY_VISITOR_H__
@@ -15,7 +15,7 @@
 #endif
 
 #ifndef __DXF_MATRIX3D_H__
-	#include "base/DXFMatrix3D.h"
+    #include "base/DXFMatrix3D.h"
 #endif
 
 class CDXFHatch;
@@ -25,12 +25,12 @@ class DXFDLLAPI CDXFScaleVisitor: public CDXFEntityVisitor
 {
 // Construction/Destruction
 public:
-	CDXFScaleVisitor(double dScaleX, double dScaleY);
+    CDXFScaleVisitor(double dScaleX, double dScaleY);
     virtual ~CDXFScaleVisitor() { }
 
 // Overrides
 protected:
-	virtual void VisitDXFHatch(CDXFHatch &entity) override;
+    virtual void VisitDXFHatch(CDXFHatch &entity) override;
 
     virtual void VisitDXFArc(CDXFArc &entity) override { }
     virtual void VisitDXFCircle(CDXFCircle &entity) override { }
@@ -46,11 +46,11 @@ protected:
     virtual void VisitDXFBlockBegin(CDXFBlockBegin &entity) override { }
 
 private:
-	void ScaleDXFGePoint2D(CDXFGePoint2D &dxfGePoint);
+    void ScaleDXFGePoint2D(CDXFGePoint2D &dxfGePoint);
 
 // Attributes
 private:
-	CDXFMatrix3D m_ScaleMatrix;
+    CDXFMatrix3D m_ScaleMatrix;
 };
 
 #endif

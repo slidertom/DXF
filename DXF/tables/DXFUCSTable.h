@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_RECORD_VISITOR_H__
-	#include "DXFRecordVisitor.h"
+    #include "DXFRecordVisitor.h"
 #endif
 
 #ifndef __DXF_TABLE_VISITOR_H__
@@ -27,9 +27,9 @@ public:
 
 // Operations
 public:
-	CDXFUCSTableRecord *GetUSCTableRecord(const char *sName) {
-	    CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
-	    CDXFUCSTableRecord *pRecord = (CDXFUCSTableRecord *)pRec;
+    CDXFUCSTableRecord *GetUSCTableRecord(const char *sName) {
+        CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
+        CDXFUCSTableRecord *pRecord = (CDXFUCSTableRecord *)pRec;
         return pRecord;
     }
 };

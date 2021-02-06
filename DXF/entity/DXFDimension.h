@@ -3,23 +3,23 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "../DXFDLLAPI.h"
+    #include "../DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_ENTITY_H__ 
-	#include "DXFEntity.h"
+    #include "DXFEntity.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "../base/DXF3DPoint.h"
+    #include "../base/DXF3DPoint.h"
 #endif
 
 #ifndef __DXF_BLOCKTABLERECORD_H__
-	#include "../tables/DXFBlockTableRecord.h"
+    #include "../tables/DXFBlockTableRecord.h"
 #endif
 
 #ifndef __DXF_DIMSTYLETABLERECORD_H__
-	#include "../tables/DXFDimStyleTableRecord.h"
+    #include "../tables/DXFDimStyleTableRecord.h"
 #endif
 
 #ifndef __DXF_ENTITY_VISITOR_H__
@@ -32,12 +32,12 @@
 
 enum EAttachmentPoint
 {
-	eTopLeft = 1,
-	eTopCenter,
-	eTopRight,
-	eMiddleLeft,
-	eMiddleCenter,
-	eMiddleRight,
+    eTopLeft = 1,
+    eTopCenter,
+    eTopRight,
+    eMiddleLeft,
+    eMiddleCenter,
+    eMiddleRight,
 };
 
 class CDXFText;
@@ -47,23 +47,23 @@ class DXFDLLAPI CDXFDimension : public CDXFEntity
 // Construction/Destruction
 public:
     CDXFDimension() : CDXFEntity("DIMENSION") { }
-	CDXFDimension(const CDXFDimension &dimension);
+    CDXFDimension(const CDXFDimension &dimension);
     virtual ~CDXFDimension() { delete m_pOverrideStyle; }
 
 // Operations
 public:
-	void SetDimStyle(const CDXFObjectID &dimStyleID);
+    void SetDimStyle(const CDXFObjectID &dimStyleID);
     void SetDimBlock(const CDXFObjectID &dimBlockID) { m_dimBlockID = dimBlockID; }
     const CDXFObjectID &GetDimBlock() { return m_dimBlockID; }
 
     const char *GetDimText() const { return m_sDimensionText.c_str(); }
-	void SetDimText(const char *sDimText);
+    void SetDimText(const char *sDimText);
     
-	void SetDimTextHeight(double dHeight);
+    void SetDimTextHeight(double dHeight);
 
     bool GetOverrideDimText() const { return m_bOverrideDimText; }
-	// sets dimension text to override mode, 
-	// so that it was not recalculated after exploding dimensions block
+    // sets dimension text to override mode, 
+    // so that it was not recalculated after exploding dimensions block
     void SetOverrideDimText(bool bOverride) { m_bOverrideDimText = bOverride; }
 
     int32_t GetDimSah() const { ASSERT(m_pOverrideStyle); return m_pOverrideStyle->m_nDimSah; }
@@ -92,8 +92,10 @@ public:
     void EnableBlockRef(bool bEnable) { m_bEnableBlockRef = bEnable; }
 
     static bool Init(CDXFDimension *pDimension, CDXFDatabase *pDB);
-    static void AddDefaultArrowBlock(CDXFDimension *pDim, CDXFBlockTableRecord *pDimBlock, CDXFDatabase *pDB, const CDXF3DPoint &dimPoint, double dAngle);
-    static void AddArrowBlock(CDXFDimension *pDim, CDXFBlockTableRecord *pDimBlock, const CDXF3DPoint &dimPoint, const CDXFObjectID &arrowBlock, double dAngle, CDXFDatabase *pDB);
+    static void AddDefaultArrowBlock(CDXFDimension *pDim, CDXFBlockTableRecord *pDimBlock, 
+                                     CDXFDatabase *pDB, const CDXF3DPoint &dimPoint, double dAngle);
+    static void AddArrowBlock(CDXFDimension *pDim, CDXFBlockTableRecord *pDimBlock, const CDXF3DPoint &dimPoint, 
+                              const CDXFObjectID &arrowBlock, double dAngle, CDXFDatabase *pDB);
     static void GetArrowBlocks(CDXFDimension *pDim, CDXFDatabase *pDB, CDXFObjectID &arrowBlock1, CDXFObjectID &arrowBlock2);
 
 // Overrides
@@ -102,9 +104,9 @@ public:
     virtual void AcceptDim(CDXFDimensionVisitor &vis) = 0;
 
 public:
-	CDXFObjectID m_dimBlockID;
-	CDXFObjectID m_dimStyleID;
-	CDXF3DPoint m_defPoint;
+    CDXFObjectID m_dimBlockID;
+    CDXFObjectID m_dimStyleID;
+    CDXF3DPoint m_defPoint;
 
     std::string m_sOverridenDimText;
     std::string m_sDimensionText;

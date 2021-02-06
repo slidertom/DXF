@@ -21,9 +21,9 @@
 #include "entity/DXFEllipse.h"
 #include "entity/DXFBlockBegin.h"
 
-#include "DXFDeepCloneRecordUtil.h"
+#include "DXFCloneUtil.h"
 
-CDXFBlockCloneVisitor::CDXFBlockCloneVisitor(CDXFDatabase *pDB, CDXFDatabase *pSrcDB)
+CDXFBlockCloneVisitor::CDXFBlockCloneVisitor(CDXFDatabase *pDB, const CDXFDatabase *pSrcDB)
 {
     m_pDB = pDB;
     m_pSrcDB = pSrcDB;
@@ -54,23 +54,7 @@ void CDXFBlockCloneVisitor::VisitDXFMText(CDXFMText &entity)
     CDXFMText *pObjText = new CDXFMText(entity);
     m_pObj = pObjText;
 
-    CDXFObjectID textStyleIDSrc = entity.GetTextStyleID();
-	if ( textStyleIDSrc.IsNull() ) {
-        return;
-	}
-
-  	CDXFTextStyleTableRecord *pTextStyleSrc = (CDXFTextStyleTableRecord *)textStyleIDSrc.GetObject();
-	const std::string sTextStyle = pTextStyleSrc->GetName();
-    CDXFTextStyleTable *pTextStyleTrg = m_pDB->GetTextStyleTable();
-	CDXFObjectID textStyleIDTrg;
-
-	// Get text style of the original text entity
-	pTextStyleTrg->GetTableRecordId(sTextStyle.c_str(), textStyleIDTrg);
-	if (textStyleIDTrg.IsNull()) {
-		return;
-    }
-
-	pObjText->SetTextStyleID(textStyleIDTrg);
+    text_style_utils::UpdateTextStyle(*pObjText, m_pDB);
 }
 
 void CDXFBlockCloneVisitor::VisitDXFPoint(CDXFPoint &entity)
@@ -93,23 +77,7 @@ void CDXFBlockCloneVisitor::VisitDXFText(CDXFText &entity)
     CDXFText *pObj = new CDXFText(entity);
     m_pObj = pObj;
 
-    CDXFObjectID textStyleIDSrc = entity.GetTextStyle();
-	if ( textStyleIDSrc.IsNull() ) {
-        return;
-	}
-
-  	CDXFTextStyleTableRecord *pTextStyleSrc = (CDXFTextStyleTableRecord *)textStyleIDSrc.GetObject();
-	const std::string sTextStyle = pTextStyleSrc->GetName();
-    CDXFTextStyleTable *pTextStyleTrg = m_pDB->GetTextStyleTable();
-	CDXFObjectID textStyleIDTrg;
-
-	// Get text style of the original text entity
-	pTextStyleTrg->GetTableRecordId(sTextStyle.c_str(), textStyleIDTrg);
-	if (textStyleIDTrg.IsNull()) {
-		return;
-    }
-
-	pObj->SetTextStyle(textStyleIDTrg);
+    text_style_utils::UpdateTextStyle(*pObj, m_pDB);
 }
 
 void CDXFBlockCloneVisitor::VisitDXFInsert(CDXFInsert &entity)
@@ -137,14 +105,14 @@ class CDXFDimBlockCloneVisitor : public CDXFDimensionVisitor
 {
 // Construction/Destruction
 public:
-    CDXFDimBlockCloneVisitor(CDXFDatabase *pDB, const CDXFObjectID &dimStyleIDDst) : m_pDB(pDB), m_dimStyleIDDst(dimStyleIDDst) { };
-	virtual ~CDXFDimBlockCloneVisitor() { }
+    CDXFDimBlockCloneVisitor(CDXFDatabase *pDB, const CDXFObjectID &dimStyleIDDst) : m_pDB(pDB), m_dimStyleIDDst(dimStyleIDDst) { }
+    virtual ~CDXFDimBlockCloneVisitor() { }
 
 // Overrides CDXFEntityVisitor
 protected:
-    virtual void VisitDXFAlignedDimension(CDXFAlignedDimension &entity)     override;
-    virtual void VisitDXFAngledDimension(CDXFAngledDimension &entity)       override;
-    virtual void VisitDXFRotatedDimension(CDXFRotatedDimension &entity)     override;
+    virtual void VisitDXFAlignedDimension(CDXFAlignedDimension &entity) override;
+    virtual void VisitDXFAngledDimension(CDXFAngledDimension &entity) override;
+    virtual void VisitDXFRotatedDimension(CDXFRotatedDimension &entity) override;
 
 // Operations
 public:
@@ -163,8 +131,8 @@ void CDXFDimBlockCloneVisitor::VisitDXFAlignedDimension(CDXFAlignedDimension &en
     m_pObj = pObj;
 
     if (!m_dimStyleIDDst.IsNull()) {
-		pObj->SetDimStyle(m_dimStyleIDDst);
-	}
+        pObj->SetDimStyle(m_dimStyleIDDst);
+    }
 
     CDXFAlignedDimension::Init(pObj, m_pDB);
 }
@@ -174,8 +142,8 @@ void CDXFDimBlockCloneVisitor::VisitDXFAngledDimension(CDXFAngledDimension &enti
     CDXFAngledDimension *pObj = new CDXFAngledDimension(entity);
     m_pObj = pObj;
     if (!m_dimStyleIDDst.IsNull()) {
-		pObj->SetDimStyle(m_dimStyleIDDst);
-	}
+        pObj->SetDimStyle(m_dimStyleIDDst);
+    }
 }
 
 void CDXFDimBlockCloneVisitor::VisitDXFRotatedDimension(CDXFRotatedDimension &entity)
@@ -184,8 +152,8 @@ void CDXFDimBlockCloneVisitor::VisitDXFRotatedDimension(CDXFRotatedDimension &en
     m_pObj = pObj;
 
     if (!m_dimStyleIDDst.IsNull()) {
-		pObj->SetDimStyle(m_dimStyleIDDst);
-	}
+        pObj->SetDimStyle(m_dimStyleIDDst);
+    }
 
     CDXFRotatedDimension::Init(pObj, m_pDB);
 }
@@ -195,19 +163,19 @@ void CDXFBlockCloneVisitor::VisitDXFDimension(CDXFDimension &entity)
     CDXFObjectID dimStyleIDSrc = entity.m_dimStyleID;
     CDXFObjectID dimStyleIDDst;
 
-	if (!dimStyleIDSrc.IsNull()) {
-		CDXFDimStyleTableRecord *pDimStyle = (CDXFDimStyleTableRecord *)dimStyleIDSrc.GetObject();
-		const char *sDimStyle = pDimStyle->GetName();
-       	CDXFDimStyleTable *pDimStyleTable = m_pDB->GetDimStyleTable();
-    	ASSERT(pDimStyleTable);
+    if (!dimStyleIDSrc.IsNull()) {
+        CDXFDimStyleTableRecord *pDimStyle = (CDXFDimStyleTableRecord *)dimStyleIDSrc.GetObject();
+        const char *sDimStyle = pDimStyle->GetName();
+           CDXFDimStyleTable *pDimStyleTable = m_pDB->GetDimStyleTable();
+        ASSERT(pDimStyleTable);
 
-		if ( 0 != strlen(sDimStyle) ) {
-			pDimStyleTable->GetTableRecordId(sDimStyle, dimStyleIDDst); // Get dim style of the original dim entity
-		}
-		else {
-			pDimStyleTable->GetTableRecordId("STANDARD", dimStyleIDDst);
-		}
-	}
+        if ( 0 != strlen(sDimStyle) ) {
+            pDimStyleTable->GetTableRecordId(sDimStyle, dimStyleIDDst); // Get dim style of the original dim entity
+        }
+        else {
+            pDimStyleTable->GetTableRecordId("STANDARD", dimStyleIDDst);
+        }
+    }
 
     CDXFDimBlockCloneVisitor vis(m_pDB, dimStyleIDDst);
     entity.AcceptDim(vis);
@@ -291,7 +259,7 @@ void CDXFBlockCloneVisitor::VisitDimStyletableRecord(CDXFDimStyleTableRecord &re
         pNewRecord->SetDimBlk2(pBlockNew->GetObjectID());
     }
 
-	objectID = record.GetDimTxSty();
+    objectID = record.GetDimTxSty();
     if ( !objectID.IsNull() ) {
         const std::string sTextStyleName = ((CDXFTextStyleTableRecord *)objectID.GetObject())->GetName();
         CDXFTextStyleTableRecord *pTextStyle = nullptr;
@@ -369,7 +337,7 @@ void CDXFBlockCloneVisitor::VisitBlockTableRecord(CDXFBlockTableRecord &record)
             CDXFLayerTableRecord *pNewLayer = pLayerTable->GetLayerTableRecord(pLayer->GetName());
 
             if ( !pNewLayer ) {
-                pNewLayer = (CDXFLayerTableRecord *)deep_clone_util::DeepCloneLayerTableRecord(pLayer, m_pDB);
+                pNewLayer = (CDXFLayerTableRecord *)dxf_clone_util::DeepCloneLayerTableRecord(pLayer, m_pDB);
                 layerID   = pNewLayer->GetObjectID();
             }
             else {

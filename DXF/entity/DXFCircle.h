@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_ENTITY_H__
-	#include "DXFEntity.h"
+    #include "DXFEntity.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "DXF3DPoint.h"
+    #include "DXF3DPoint.h"
 #endif
 
 #ifndef __DXF_ENTITY_VISITOR_H__
@@ -18,13 +18,15 @@
     #include "base/DXFLineWeight.h"
 #endif
 
-class CDXFCircle : public CDXFEntity  
+class CDXFCircle final : public CDXFEntity  
 {
 // Construction/Destruction
 public:
     CDXFCircle() : CDXFEntity("CIRCLE") { } 
-	CDXFCircle(const CDXF3DPoint &pt, double dRadius) : CDXFEntity("CIRCLE"), m_ptCenter(pt), m_dRadius(dRadius) { }
-    CDXFCircle(const CDXFCircle &circle) : CDXFEntity(circle, "CIRCLE"), m_dRadius(circle.m_dRadius), m_ptCenter(circle.m_ptCenter), m_eLineWeight(circle.m_eLineWeight) { }
+    CDXFCircle(const CDXF3DPoint &pt, double dRadius) : CDXFEntity("CIRCLE"), 
+                                                        m_ptCenter(pt), m_dRadius(dRadius) { }
+    CDXFCircle(const CDXFCircle &circle) : CDXFEntity(circle, "CIRCLE"), 
+                                           m_dRadius(circle.m_dRadius), m_ptCenter(circle.m_ptCenter), m_eLineWeight(circle.m_eLineWeight) { }
     virtual ~CDXFCircle() { }
 
 // Overrides
@@ -45,7 +47,7 @@ public:
 // Attributes
 private:
     double m_dRadius {0.};
-	CDXF3DPoint m_ptCenter;
+    CDXF3DPoint m_ptCenter;
     EDXFLineWeight m_eLineWeight {EDXFLineWeight::LW_ByLayer}; // default: By Layer.
 };
 

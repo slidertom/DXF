@@ -2,30 +2,34 @@
 #define __DXF_ANGLED_DIMENSION_H__
 #pragma once
 
+#ifndef __DXF_DLLAPI_H__
+    #include "../DXFDLLAPI.h"
+#endif
+
 #ifndef __DXF_DIMENSION_H__
-	#include "DXFDimension.h"
+    #include "DXFDimension.h"
 #endif
 
 #ifndef __DXF_3DPOINT_H__
-	#include "DXF3DPoint.h"
+    #include "DXF3DPoint.h"
 #endif
 
-class CDXFAngledDimension : public CDXFDimension  
+class DXFDLLAPI CDXFAngledDimension : public CDXFDimension
 {
 // Construction/Destruction
 public:
-	CDXFAngledDimension(const CDXF3DPoint &ptCenter, const CDXF3DPoint &pt1, const CDXF3DPoint &pt2);
-	CDXFAngledDimension(const CDXFAngledDimension &dim);
+    CDXFAngledDimension(const CDXF3DPoint &ptCenter, const CDXF3DPoint &pt1, const CDXF3DPoint &pt2);
+    CDXFAngledDimension(const CDXFAngledDimension &dim);
     virtual ~CDXFAngledDimension() { }
 
 // Overrides
 public:
-    virtual void AcceptDim(CDXFDimensionVisitor &vis) override { vis.VisitDXFAngledDimension(*this); };
+    virtual void AcceptDim(CDXFDimensionVisitor &vis) override { vis.VisitDXFAngledDimension(*this); }
 
 // Static operations
 public:
     static bool Init(CDXFAngledDimension *pDim, CDXFDatabase *pDB, double dRadius);
-	
+    
 public:
     const CDXF3DPoint &GetCenterPoint() const { return m_ptCenter; }
     const CDXF3DPoint &GetFirstPoint() const  { return m_pt1; }

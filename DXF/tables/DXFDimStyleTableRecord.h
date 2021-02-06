@@ -3,31 +3,35 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "DXFDLLAPI.h"
+    #include "DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_SYMBOL_TABLE_RECORD_H__
-	#include "DXFSymbolTableRecord.h"
+    #include "DXFSymbolTableRecord.h"
 #endif
 
 class DXFDLLAPI CDXFDimStyleTableRecord : public CDXFSymbolTableRecord  
 {
+// Construction/Destruction
 public:
+    CDXFDimStyleTableRecord(const CDXFDimStyleTableRecord &x) : CDXFSymbolTableRecord(x.GetName(), "DIMSTYLE") { *this = x; }
     CDXFDimStyleTableRecord(const char *sName) : CDXFSymbolTableRecord(sName, "DIMSTYLE") { }
     virtual ~CDXFDimStyleTableRecord() { }
 
+// Operators
+public:
     CDXFDimStyleTableRecord &operator=(const CDXFDimStyleTableRecord &point);
 
 public:
-	void SetDimBlk0(const CDXFObjectID &id);
-	void SetDimBlk1(const CDXFObjectID &id);
-	void SetDimBlk2(const CDXFObjectID &id);
-    void SetDimTxSty(const CDXFObjectID & id);
+    void SetDimBlk0(const CDXFObjectID &id);
+    void SetDimBlk1(const CDXFObjectID &id);
+    void SetDimBlk2(const CDXFObjectID &id);
+    void SetDimTxSty(const CDXFObjectID &id);
 
     const CDXFObjectID &GetDimLdrBlk(CDXFDatabase *pDB);
-    const CDXFObjectID &GetDimBlk0(CDXFDatabase *pDB);
-    const CDXFObjectID &GetDimBlk1(CDXFDatabase *pDB);
-    const CDXFObjectID &GetDimBlk2(CDXFDatabase *pDB);
+    const CDXFObjectID &GetDimBlk0(const CDXFDatabase *pDB);
+    const CDXFObjectID &GetDimBlk1(const CDXFDatabase *pDB);
+    const CDXFObjectID &GetDimBlk2(const CDXFDatabase *pDB);
     const CDXFObjectID &GetDimTxSty();
 
     unsigned char GetFlags() const { return m_fFlags; }
@@ -94,8 +98,8 @@ public:
     double m_dDimASz     {2.5};
     double m_dDimScale   {1.0};
 
-	std::string m_sDimpost;
-	std::string m_sDimapost;
+    std::string m_sDimpost;
+    std::string m_sDimapost;
 
     //BLOCK_RECORD table is read later than DIMSTYLE.
     //The handle provides a possibility to connect to required block by the unique value.
@@ -107,10 +111,10 @@ public:
 private:
     unsigned char m_fFlags {0};
     CDXFObjectID m_dimLdrBlkID;
-	CDXFObjectID m_dimBlkID;
-	CDXFObjectID m_dimBlk1ID;
-	CDXFObjectID m_dimBlk2ID;
-	CDXFObjectID m_dimTxStyID;
+    CDXFObjectID m_dimBlkID;
+    CDXFObjectID m_dimBlk1ID;
+    CDXFObjectID m_dimBlk2ID;
+    CDXFObjectID m_dimTxStyID;
 };
 
 #endif

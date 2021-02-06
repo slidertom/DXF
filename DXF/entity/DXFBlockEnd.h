@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_ENTITY_H__
-	#include "DXFEntity.h"
+    #include "DXFEntity.h"
 #endif
 
 class CDXFBlockEnd : public CDXFEntity  

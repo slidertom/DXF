@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_OBJECT_H__
-	#include "base/DXFObject.h"
+    #include "base/DXFObject.h"
 #endif
 
 #include "unordered_map"
@@ -34,14 +34,14 @@ public:
 
 // Operations
 public:
-	bool SetAt(const char *sName, CDXFObject *pObject, CDXFDatabase *pDatabase);
-	bool SetAt(const char *sName, CDXFObject *pObject, CDXFObjectID &objectID, CDXFDatabase *pDatabase);
+    bool SetAt(const char *sName, CDXFObject *pObject, CDXFDatabase *pDatabase);
+    bool SetAt(const char *sName, CDXFObject *pObject, CDXFObjectID &objectID, CDXFDatabase *pDatabase);
 
     CDXFObject *GetObjectByName(const char *sName) {
-	    auto found = m_map.find(sName);
-	    if ( found != m_map.end() ) {
-		    return found->second;
-	    }
+        auto found = m_map.find(sName);
+        if ( found != m_map.end() ) {
+            return found->second;
+        }
         return nullptr;
     }
 
@@ -52,7 +52,7 @@ public:
 
 // Attributes
 public:
-	std::unordered_map<std::string, CDXFObject *> m_map;
+    std::unordered_map<std::string, CDXFObject *> m_map;
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // class CDXFDictionaryWithDefault
@@ -75,7 +75,7 @@ public:
 
 // Attributes 
 private:
-	CDXFObjectID m_defaultID;
+    CDXFObjectID m_defaultID;
 };
 
 #endif

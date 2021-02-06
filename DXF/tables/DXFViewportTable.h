@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "DXFDLLAPI.h"
+    #include "DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_RECORD_VISITOR_H__
-	#include "DXFRecordVisitor.h"
+    #include "DXFRecordVisitor.h"
 #endif
 
 #ifndef __DXF_SYMBOL_TABLE_H__
@@ -31,9 +31,9 @@ public:
 
 // Operations
 public:
-	CDXFViewportTableRecord *GetViewPortTableRecord(const char *sName) {
-	    CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
-	    CDXFViewportTableRecord *pRecord = (CDXFViewportTableRecord *)pRec;
+    CDXFViewportTableRecord *GetViewPortTableRecord(const char *sName) {
+        CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
+        CDXFViewportTableRecord *pRecord = (CDXFViewportTableRecord *)pRec;
         return pRecord;
     }
 };

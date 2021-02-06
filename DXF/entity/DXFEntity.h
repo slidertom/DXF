@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_OBJECT_H__
-	#include "../base/DXFObject.h"
+    #include "../base/DXFObject.h"
 #endif
 
 class CDXFEntityVisitor;
@@ -23,7 +23,7 @@ public:
     const CDXFObjectID &GetLayerID() const { return m_layerID; }
     void SetLayerID(const CDXFObjectID &layerID) { m_layerID = layerID; }
 
-    void SetInModelSpace(bool bInModelSpace) { m_bInModelSpace = bInModelSpace; };
+    void SetInModelSpace(bool bInModelSpace) { m_bInModelSpace = bInModelSpace; }
     bool GetInModelSpace() const { return m_bInModelSpace; };
 
 // Overrides

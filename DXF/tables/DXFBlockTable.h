@@ -3,11 +3,11 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "DXFDLLAPI.h"
+    #include "DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_SYMBOL_TABLE_H__
-	#include "DXFSymbolTable.h"
+    #include "DXFSymbolTable.h"
 #endif
 
 class CDXFBlockTableRecord;
@@ -27,7 +27,7 @@ public:
 public:
     CDXFBlockTableRecord *CreateUniqueTableRecord(CDXFObjectID &objectID, CDXFDatabase *pDB);
     CDXFBlockTableRecord *CreateBlockTableRecord(const char *sBlockName, CDXFObjectID &objectID, CDXFDatabase *pDB);
-	CDXFBlockTableRecord *CreateBlockTableRecord(const char *sBlockName, CDXFDatabase *pDB);
+    CDXFBlockTableRecord *CreateBlockTableRecord(const char *sBlockName, CDXFDatabase *pDB);
     CDXFBlockTableRecord *CreateBlockTableRecord();
 
     CDXFBlockTableRecord *GetBlockTableRecord(const char *sName);

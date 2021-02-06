@@ -3,15 +3,15 @@
 #pragma once
 
 #ifndef __DXF_DLLAPI_H__
-	#include "../DXFDLLAPI.h"
+    #include "../DXFDLLAPI.h"
 #endif
 
 #ifndef __DXF_OBJECT_H__
-	#include "base/DXFObject.h"
+    #include "base/DXFObject.h"
 #endif
 
 #ifndef __DXF_OBJECTID_H__
-	#include "base/DXFObjectID.h"
+    #include "base/DXFObjectID.h"
 #endif
 
 #ifndef __DXF_TABLE_VISITOR_H__
@@ -42,14 +42,14 @@ public:
 // Operations
 public:
     CDXFSymbolTableRecord *GetTableRecordByName(const char *sName);
-	void GetTableRecordId(const char *sName, CDXFObjectID &id);
+    void GetTableRecordId(const char *sName, CDXFObjectID &id) const;
 
 protected:
-	void AddTableRecord(CDXFSymbolTableRecord *pRecord, CDXFDatabase *pDB) {
-	    CDXFObjectID objectID;
-	    AddTableRecordId(pRecord, objectID, pDB);
+    void AddTableRecord(CDXFSymbolTableRecord *pRecord, CDXFDatabase *pDB) {
+        CDXFObjectID objectID;
+        AddTableRecordId(pRecord, objectID, pDB);
     }
-	void AddTableRecordId(CDXFSymbolTableRecord *pRecord, CDXFObjectID &objectID, CDXFDatabase *pDB);
+    void AddTableRecordId(CDXFSymbolTableRecord *pRecord, CDXFObjectID &objectID, CDXFDatabase *pDB);
 
 public:
     template <class _Function>
@@ -62,7 +62,7 @@ public:
 
 // Attributes
 public:
-	std::vector<CDXFObjectID> m_listRecords; // maybe map has to be used
+    std::vector<CDXFObjectID> m_listRecords; // maybe map has to be used
 };
 
 #endif

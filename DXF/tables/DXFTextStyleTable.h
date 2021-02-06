@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __DXF_SYMBOL_TABLE_H__
-	#include "DXFSymbolTable.h"
+    #include "DXFSymbolTable.h"
 #endif
 
 #ifndef __DXF_TABLE_VISITOR_H__
@@ -26,9 +26,9 @@ public:
     void AddTableRecord(CDXFSymbolTableRecord *pRecord, CDXFDatabase *pDB) {
         CDXFSymbolTable::AddTableRecord(pRecord, pDB);
     }
-	void GetTableRecord(const char *sName, CDXFTextStyleTableRecord * &pRecord) {
-	    CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
-	    pRecord = (CDXFTextStyleTableRecord *)pRec;
+    void GetTableRecord(const char *sName, CDXFTextStyleTableRecord * &pRecord) {
+        CDXFSymbolTableRecord *pRec = CDXFSymbolTable::GetTableRecordByName(sName);
+        pRecord = (CDXFTextStyleTableRecord *)pRec;
     }
 };
 
